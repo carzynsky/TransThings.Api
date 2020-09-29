@@ -1,0 +1,9 @@
+C:\Users\carzy\source\repos\TransThings.Api\TransThings.Api.DataAccess\bin\Debug\netstandard2.0\TransThings.Api.DataAccess.deps.json
+C:\Users\carzy\source\repos\TransThings.Api\TransThings.Api.DataAccess\bin\Debug\netstandard2.0\TransThings.Api.DataAccess.dll
+C:\Users\carzy\source\repos\TransThings.Api\TransThings.Api.DataAccess\obj\Debug\netstandard2.0\TransThings.Api.DataAccess.csprojAssemblyReference.cache
+C:\Users\carzy\source\repos\TransThings.Api\TransThings.Api.DataAccess\obj\Debug\netstandard2.0\TransThings.Api.DataAccess.AssemblyInfoInputs.cache
+C:\Users\carzy\source\repos\TransThings.Api\TransThings.Api.DataAccess\obj\Debug\netstandard2.0\TransThings.Api.DataAccess.AssemblyInfo.cs
+C:\Users\carzy\source\repos\TransThings.Api\TransThings.Api.DataAccess\bin\Debug\netstandard2.0\TransThings.Api.DataAccess.pdb
+C:\Users\carzy\source\repos\TransThings.Api\TransThings.Api.DataAccess\obj\Debug\netstandard2.0\TransThings.Api.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\carzy\source\repos\TransThings.Api\TransThings.Api.DataAccess\obj\Debug\netstandard2.0\TransThings.Api.DataAccess.dll
+C:\Users\carzy\source\repos\TransThings.Api\TransThings.Api.DataAccess\obj\Debug\netstandard2.0\TransThings.Api.DataAccess.pdb
