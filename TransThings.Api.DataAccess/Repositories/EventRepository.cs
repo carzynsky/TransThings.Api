@@ -27,6 +27,12 @@ namespace TransThings.Api.DataAccess.Repositories
             var _event = await context.Events.SingleOrDefaultAsync(x => x.Id.Equals(id));
             return _event;
         }
+        
+        public async Task<List<Event>> GetEventsByForwardingOrderAsync(int forwardingOrderId)
+        {
+            var _event = await context.Events.Where(x => x.ForwardingOrderId.Equals(forwardingOrderId)).ToListAsync();
+            return _event;
+        }
 
         public async Task AddEventAsync(Event _event)
         {

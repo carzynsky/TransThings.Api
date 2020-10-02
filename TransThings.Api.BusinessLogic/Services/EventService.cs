@@ -123,5 +123,11 @@ namespace TransThings.Api.BusinessLogic.Services
 
             return new GenericResponse(true, "Event has been updated.");
         }
+
+        public async Task<List<Event>> GetEventsByForwardingOrder(int forwardingOrderId)
+        {
+            var _events = await unitOfWork.EventRepository.GetEventsByForwardingOrderAsync(forwardingOrderId);
+            return _events;
+        }
     }
 }
