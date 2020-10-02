@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TransThings.Api.Migrations
 {
-    public partial class transThingsMigration : Migration
+    public partial class transThingMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,27 +47,6 @@ namespace TransThings.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Configurations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Events",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EventName = table.Column<string>(maxLength: 80, nullable: false),
-                    EventStartTime = table.Column<DateTime>(nullable: false),
-                    EventEndTime = table.Column<DateTime>(nullable: false),
-                    ContactPersonFirstName = table.Column<string>(maxLength: 255, nullable: false),
-                    ContactPersonLastName = table.Column<string>(maxLength: 255, nullable: false),
-                    ContactPersonPhoneNumber = table.Column<string>(maxLength: 40, nullable: false),
-                    EventPlace = table.Column<string>(maxLength: 80, nullable: true),
-                    EventStreetAddress = table.Column<string>(maxLength: 100, nullable: true),
-                    OtherInformation = table.Column<string>(maxLength: 512, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Events", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,7 +170,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.PaymentFormId,
                         principalTable: "PaymentForms",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -217,7 +196,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.TransporterId,
                         principalTable: "Transporters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -246,7 +225,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.UserRoleId,
                         principalTable: "UserRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -271,13 +250,13 @@ namespace TransThings.Api.Migrations
                         column: x => x.TransporterId,
                         principalTable: "Transporters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Vehicles_VehicleTypes_VehicleTypeId",
                         column: x => x.VehicleTypeId,
                         principalTable: "VehicleTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -299,7 +278,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.ForwarderId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -320,7 +299,35 @@ namespace TransThings.Api.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EventName = table.Column<string>(maxLength: 80, nullable: false),
+                    EventStartTime = table.Column<DateTime>(nullable: false),
+                    EventEndTime = table.Column<DateTime>(nullable: false),
+                    ContactPersonFirstName = table.Column<string>(maxLength: 255, nullable: false),
+                    ContactPersonLastName = table.Column<string>(maxLength: 255, nullable: false),
+                    ContactPersonPhoneNumber = table.Column<string>(maxLength: 40, nullable: false),
+                    EventPlace = table.Column<string>(maxLength: 80, nullable: true),
+                    EventStreetAddress = table.Column<string>(maxLength: 100, nullable: true),
+                    OtherInformation = table.Column<string>(maxLength: 512, nullable: true),
+                    ForwardingOrderId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Events_ForwardingOrders_ForwardingOrderId",
+                        column: x => x.ForwardingOrderId,
+                        principalTable: "ForwardingOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -363,13 +370,13 @@ namespace TransThings.Api.Migrations
                         column: x => x.ClientId,
                         principalTable: "Clients",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_Users_ConsultantId",
                         column: x => x.ConsultantId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_ForwardingOrders_ForwardingOrderId",
                         column: x => x.ForwardingOrderId,
@@ -381,7 +388,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.OrderStatusId,
                         principalTable: "OrderStatuses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_Users_OrdererId",
                         column: x => x.OrdererId,
@@ -393,19 +400,19 @@ namespace TransThings.Api.Migrations
                         column: x => x.PaymentFormId,
                         principalTable: "PaymentForms",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_VehicleTypes_VehicleTypeId",
                         column: x => x.VehicleTypeId,
                         principalTable: "VehicleTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_Warehouses_WarehouseId",
                         column: x => x.WarehouseId,
                         principalTable: "Warehouses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -425,13 +432,13 @@ namespace TransThings.Api.Migrations
                         column: x => x.ForwardingOrderId,
                         principalTable: "ForwardingOrders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Transits_ForwardingOrders_Transits_TransitId",
                         column: x => x.TransitId,
                         principalTable: "Transits",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -457,13 +464,18 @@ namespace TransThings.Api.Migrations
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Drivers_TransporterId",
                 table: "Drivers",
                 column: "TransporterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_ForwardingOrderId",
+                table: "Events",
+                column: "ForwardingOrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ForwardingOrders_ForwarderId",

@@ -10,8 +10,8 @@ using TransThings.Api.DataAccess;
 namespace TransThings.Api.Migrations
 {
     [DbContext(typeof(TransThingsDbContext))]
-    [Migration("20200928203412_transThingsMigration")]
-    partial class transThingsMigration
+    [Migration("20201002191059_transThingMigration")]
+    partial class transThingMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -207,11 +207,16 @@ namespace TransThings.Api.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<int>("ForwardingOrderId")
+                        .HasColumnType("int");
+
                     b.Property<string>("OtherInformation")
                         .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ForwardingOrderId");
 
                     b.ToTable("Events");
                 });
@@ -774,6 +779,15 @@ namespace TransThings.Api.Migrations
                     b.HasOne("TransThings.Api.DataAccess.Models.Transporter", "Transporter")
                         .WithMany()
                         .HasForeignKey("TransporterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TransThings.Api.DataAccess.Models.Event", b =>
+                {
+                    b.HasOne("TransThings.Api.DataAccess.Models.ForwardingOrder", "ForwardingOrder")
+                        .WithMany()
+                        .HasForeignKey("ForwardingOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

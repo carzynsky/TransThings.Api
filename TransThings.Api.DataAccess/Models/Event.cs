@@ -43,7 +43,7 @@ namespace TransThings.Api.DataAccess.Models
 
         public int ForwardingOrderId{ get; set; }
 
-        [ForeignKey("ForwardignOrderId")]
+        [ForeignKey("ForwardingOrderId")]
         public virtual ForwardingOrder ForwardingOrder { get; set; }
 
     }
