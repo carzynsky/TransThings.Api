@@ -45,9 +45,9 @@ namespace TransThings.Api.Controllers
         {
             var configurationAddResult = await configurationService.AddConfiguration(configuration);
             if (!configurationAddResult.IsSuccessful)
-                return BadRequest(configurationAddResult.Message);
+                return BadRequest(configurationAddResult);
 
-            return Ok(configurationAddResult.Message);
+            return Ok(configurationAddResult);
         }
 
         [Authorize(Roles = Role.Admin)]
@@ -56,9 +56,9 @@ namespace TransThings.Api.Controllers
         {
             var configurationUpdateResult = await configurationService.UpdateConfiguration(configuration, id);
             if (!configurationUpdateResult.IsSuccessful)
-                return BadRequest(configurationUpdateResult.Message);
+                return BadRequest(configurationUpdateResult);
 
-            return Ok(configurationUpdateResult.Message);
+            return Ok(configurationUpdateResult);
         }
 
         [Authorize(Roles = Role.Admin)]
@@ -67,9 +67,9 @@ namespace TransThings.Api.Controllers
         {
             var configurationRemoveResult = await configurationService.RemoveConfiguration(id);
             if (!configurationRemoveResult.IsSuccessful)
-                return BadRequest(configurationRemoveResult.Message);
+                return BadRequest(configurationRemoveResult);
 
-            return Ok(configurationRemoveResult.Message);
+            return Ok(configurationRemoveResult);
         }
     }
 }

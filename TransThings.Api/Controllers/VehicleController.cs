@@ -54,9 +54,9 @@ namespace TransThings.Api.Controllers
         {
             var addVehicleResult = await vehicleService.AddVehicle(vehicle);
             if (!addVehicleResult.IsSuccessful)
-                return BadRequest(addVehicleResult.Message);
+                return BadRequest(addVehicleResult);
 
-            return Ok(addVehicleResult.Message);
+            return Ok(addVehicleResult);
         }
 
         [HttpPut("{id}")]
@@ -64,20 +64,19 @@ namespace TransThings.Api.Controllers
         {
             var updateVehicleResult = await vehicleService.UpdateVehicle(vehicle, id);
             if (!updateVehicleResult.IsSuccessful)
-                return BadRequest(updateVehicleResult.Message);
+                return BadRequest(updateVehicleResult);
 
-            return Ok(updateVehicleResult.Message);
+            return Ok(updateVehicleResult);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> RemoveVehicle([FromRoute] int id)
         {
-            // ToDo
             var removeVehicleResult = await vehicleService.RemoveVehicle(id);
             if (!removeVehicleResult.IsSuccessful)
-                return BadRequest(removeVehicleResult.Message);
+                return BadRequest(removeVehicleResult);
 
-            return Ok(removeVehicleResult.Message);
+            return Ok(removeVehicleResult);
         }
     }
 }

@@ -35,9 +35,9 @@ namespace TransThings.Api.Controllers
         {
             var addUserRoleResult = await userRoleService.AddUserRole(userRole);
             if (!addUserRoleResult.IsSuccessful)
-                return BadRequest(addUserRoleResult.Message);
+                return BadRequest(addUserRoleResult);
 
-            return Ok(addUserRoleResult.Message);
+            return Ok(addUserRoleResult);
         }
 
         [Authorize(Roles = Role.Admin)]
@@ -46,9 +46,9 @@ namespace TransThings.Api.Controllers
         {
             var updateUserRoleResult = await userRoleService.UpdateUserRole(userRole, id);
             if (!updateUserRoleResult.IsSuccessful)
-                return BadRequest(updateUserRoleResult.Message);
+                return BadRequest(updateUserRoleResult);
 
-            return Ok(updateUserRoleResult.Message);
+            return Ok(updateUserRoleResult);
         }
 
         [Authorize(Roles = Role.Admin)]
@@ -57,9 +57,9 @@ namespace TransThings.Api.Controllers
         {
             var removeUserRoleResult = await userRoleService.RemoveUserRole(id);
             if (!removeUserRoleResult.IsSuccessful)
-                return BadRequest(removeUserRoleResult.Message);
+                return BadRequest(removeUserRoleResult);
 
-            return Ok(removeUserRoleResult.Message);
+            return Ok(removeUserRoleResult);
         }
     }
 }

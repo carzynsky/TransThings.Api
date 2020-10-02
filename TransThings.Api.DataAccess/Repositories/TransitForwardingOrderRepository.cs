@@ -19,31 +19,34 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<List<TransitForwardingOrder>> GetAllTransitForwardingOrdersAsync()
         {
-            var transitForwardingOrders = await context.TransitForwardingOrders.ToListAsync();
+            var transitForwardingOrders = await context.TransitForwardingOrders.Include(x => x.ForwardingOrder).Include(x => x.Transit).ToListAsync();
             return transitForwardingOrders;
         }
 
         public async Task<List<TransitForwardingOrder>> GetTransitForwardingOrdersByTransitAsync(int transitId)
         {
-            var transitForwardingOrders = await context.TransitForwardingOrders.Where(x => x.TransitId.Equals(transitId)).ToListAsync();
+            var transitForwardingOrders = await context.TransitForwardingOrders.Where(x => x.TransitId.Equals(transitId)).
+                Include(x => x.ForwardingOrder).Include(x => x.Transit).ToListAsync();
             return transitForwardingOrders;
         }
 
         public async Task<List<TransitForwardingOrder>> GetTransitForwardingOrdersByForwardingOrderAsync(int forwardingOrderId)
         {
-            var transitForwardingOrders = await context.TransitForwardingOrders.Where(x => x.ForwardingOrderId.Equals(forwardingOrderId)).ToListAsync();
+            var transitForwardingOrders = await context.TransitForwardingOrders.Where(x => x.ForwardingOrderId.Equals(forwardingOrderId)).
+                Include(x => x.ForwardingOrder).Include(x => x.Transit).ToListAsync();
             return transitForwardingOrders;
         }
 
         public async Task<TransitForwardingOrder> GetTransitForwardingOrderByTransitAndForwardingOrderAsync(int transitId, int forwardingId)
         {
-            var transitForwardingOrder = await context.TransitForwardingOrders.SingleOrDefaultAsync(x => x.TransitId.Equals(transitId) && x.ForwardingOrderId.Equals(forwardingId));
+            var transitForwardingOrder = await context.TransitForwardingOrders.Include(x => x.ForwardingOrder).Include(x => x.Transit)
+                .SingleOrDefaultAsync(x => x.TransitId.Equals(transitId) && x.ForwardingOrderId.Equals(forwardingId));
             return transitForwardingOrder;
         }
 
         public async Task<TransitForwardingOrder> GetTransitForwardingOrderByIdAsync(int id)
         {
-            var transitForwardingOrder = await context.TransitForwardingOrders.SingleOrDefaultAsync(x => x.Id.Equals(id));
+            var transitForwardingOrder = await context.TransitForwardingOrders.Include(x => x.ForwardingOrder).Include(x => x.Transit).SingleOrDefaultAsync(x => x.Id.Equals(id));
             return transitForwardingOrder;
         }
 

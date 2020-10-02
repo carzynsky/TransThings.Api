@@ -43,9 +43,9 @@ namespace TransThings.Api.Controllers
         {
             var addOrderStatusResult = await orderStatusService.AddOrderStatus(orderStatus);
             if (!addOrderStatusResult.IsSuccessful)
-                return BadRequest(addOrderStatusResult.Message);
+                return BadRequest(addOrderStatusResult);
 
-            return Ok(addOrderStatusResult.Message);
+            return Ok(addOrderStatusResult);
         }
 
         [HttpPut("{id}")]
@@ -53,9 +53,9 @@ namespace TransThings.Api.Controllers
         {
             var updateOrderStatusResult = await orderStatusService.UpdateOrderStatus(orderStatus, id);
             if (!updateOrderStatusResult.IsSuccessful)
-                return BadRequest(updateOrderStatusResult.Message);
+                return BadRequest(updateOrderStatusResult);
 
-            return Ok(updateOrderStatusResult.Message);
+            return Ok(updateOrderStatusResult);
         }
 
         [HttpDelete("{id}")]
@@ -63,9 +63,9 @@ namespace TransThings.Api.Controllers
         {
             var removeOrderStatusResult = await orderStatusService.RemoveOrderStatus(id);
             if (!removeOrderStatusResult.IsSuccessful)
-                return BadRequest(removeOrderStatusResult.Message);
+                return BadRequest(removeOrderStatusResult);
 
-            return Ok(removeOrderStatusResult.Message);
+            return Ok(removeOrderStatusResult);
         }
     }
 }

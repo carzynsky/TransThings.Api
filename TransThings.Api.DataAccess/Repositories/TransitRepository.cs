@@ -18,13 +18,13 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<List<Transit>> GetAllTransitsAsync()
         {
-            var transits = await context.Transits.ToListAsync();
+            var transits = await context.Transits.Include(x => x.PaymentForm).ToListAsync();
             return transits;
         }
 
         public async Task<Transit> GetTransitByIdAsync(int id)
         {
-            var transit = await context.Transits.SingleOrDefaultAsync(x => x.Id.Equals(id));
+            var transit = await context.Transits.Include(x => x.PaymentForm).SingleOrDefaultAsync(x => x.Id.Equals(id));
             return transit;
         }
 

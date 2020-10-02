@@ -17,25 +17,25 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<User> GetUserByLoginAsync(string login)
         {
-            var user = await context.Users.SingleOrDefaultAsync(e => e.Login.Equals(login));
+            var user = await context.Users.Include(x => x.UserRole).SingleOrDefaultAsync(e => e.Login.Equals(login));
             return user;
         }
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            var user = await context.Users.SingleOrDefaultAsync(x => x.Id.Equals(id));
+            var user = await context.Users.Include(x => x.UserRole).SingleOrDefaultAsync(x => x.Id.Equals(id));
             return user;
         }
 
         public async Task<List<User>> GetAllUsersAsync()
         {
-            var users = await context.Users.Include(x => x.UserRole).ToListAsync();
+            var users = await context.Users.Include(x => x.UserRole).Include(x => x.UserRole).ToListAsync();
             return users;
         }
 
         public async Task<List<User>> GetAllUsersByRole(int userRoleId)
         {
-            var users = await context.Users.Where(x => x.UserRoleId.Equals(userRoleId)).ToListAsync();
+            var users = await context.Users.Include(x => x.UserRole).Where(x => x.UserRoleId.Equals(userRoleId)).ToListAsync();
             return users;
         }
 

@@ -64,9 +64,9 @@ namespace TransThings.Api.Controllers
         {
             var addForwardingOrderResult = await forwardingOrderService.AddForwardingOrder(forwardingOrder);
             if (!addForwardingOrderResult.IsSuccessful)
-                return BadRequest(addForwardingOrderResult.Message);
+                return BadRequest(addForwardingOrderResult);
 
-            return Ok(addForwardingOrderResult.Message);
+            return Ok(addForwardingOrderResult);
         }
 
         [HttpPut("{id}")]
@@ -74,9 +74,9 @@ namespace TransThings.Api.Controllers
         {
             var updateForwardingOrderResult = await forwardingOrderService.UpdateForwardingOrder(forwardingOrder, id);
             if (!updateForwardingOrderResult.IsSuccessful)
-                return BadRequest(updateForwardingOrderResult.Message);
+                return BadRequest(updateForwardingOrderResult);
 
-            return Ok(updateForwardingOrderResult.Message);
+            return Ok(updateForwardingOrderResult);
         }
 
         [HttpDelete("{id}")]
@@ -84,9 +84,9 @@ namespace TransThings.Api.Controllers
         {
             var removeForwardingOrderResult = await forwardingOrderService.RemoveForwardingOrder(id);
             if (!removeForwardingOrderResult.IsSuccessful)
-                return BadRequest(removeForwardingOrderResult.Message);
+                return BadRequest(removeForwardingOrderResult);
 
-            return Ok(removeForwardingOrderResult.Message);
+            return Ok(removeForwardingOrderResult);
         }
     }
 }

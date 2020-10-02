@@ -17,13 +17,13 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<List<Driver>> GetAllDriversAsync()
         {
-            var drivers = await context.Drivers.ToListAsync();
+            var drivers = await context.Drivers.Include(x => x.Transporter).ToListAsync();
             return drivers;
         }
 
         public async Task<Driver> GetDriverByIdAsync(int id)
         {
-            var driver = await context.Drivers.FirstOrDefaultAsync(x => x.Id.Equals(id));
+            var driver = await context.Drivers.Include(x => x.Transporter).FirstOrDefaultAsync(x => x.Id.Equals(id));
             return driver;
         }
 

@@ -45,9 +45,9 @@ namespace TransThings.Api.Controllers
         {
             var addTransporterResult = await transporterService.AddTransporter(transporter);
             if (!addTransporterResult.IsSuccessful)
-                return BadRequest(addTransporterResult.Message);
+                return BadRequest(addTransporterResult);
 
-            return Ok(addTransporterResult.Message);
+            return Ok(addTransporterResult);
         }
 
         [HttpPut("{id}")]
@@ -55,9 +55,9 @@ namespace TransThings.Api.Controllers
         {
             var updateTransporterResult = await transporterService.UpdateTransporter(transporter, id);
             if (!updateTransporterResult.IsSuccessful)
-                return BadRequest(updateTransporterResult.Message);
+                return BadRequest(updateTransporterResult);
 
-            return Ok(updateTransporterResult.Message);
+            return Ok(updateTransporterResult);
         }
 
         [HttpDelete("{id}")]
@@ -65,9 +65,9 @@ namespace TransThings.Api.Controllers
         {
             var removeTransporterResult = await transporterService.RemoveTransporter(id);
             if (!removeTransporterResult.IsSuccessful)
-                return BadRequest(removeTransporterResult.Message);
+                return BadRequest(removeTransporterResult);
 
-            return Ok(removeTransporterResult.Message);
+            return Ok(removeTransporterResult);
         }
     }
 }

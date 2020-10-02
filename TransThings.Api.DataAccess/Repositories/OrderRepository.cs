@@ -19,43 +19,58 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<List<Order>> GetAllOrdersAsync()
         {
-            var orders = await context.Orders.ToListAsync();
+            var orders = await context.Orders.Include(x => x.Client).Include(x => x.Consultant)
+                .Include(x => x.ForwardingOrder).Include(x => x.Orderer).Include(x => x.OrderStatus)
+                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).ToListAsync();
             return orders;
         }
 
         public async Task<List<Order>> GetOrdersByClientAsync(int clientId)
         {
-            var orders = await context.Orders.Where(x => x.ClientId.Equals(clientId)).ToListAsync();
+            var orders = await context.Orders.Where(x => x.ClientId.Equals(clientId)).Include(x => x.Client).Include(x => x.Consultant)
+                .Include(x => x.ForwardingOrder).Include(x => x.Orderer).Include(x => x.OrderStatus)
+                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).ToListAsync();
             return orders;
         }
 
         public async Task<List<Order>> GetOrdersByStatusAsync(int orderStatusId)
         {
-            var orders = await context.Orders.Where(x => x.OrderStatusId.Equals(orderStatusId)).ToListAsync();
+            var orders = await context.Orders.Where(x => x.OrderStatusId.Equals(orderStatusId)).Include(x => x.Client).Include(x => x.Consultant)
+                .Include(x => x.ForwardingOrder).Include(x => x.Orderer).Include(x => x.OrderStatus)
+                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).ToListAsync();
             return orders;
         }
 
         public async Task<List<Order>> GetOrdersByOrdererAsync(int ordererId)
         {
-            var orders = await context.Orders.Where(x => x.OrdererId.Equals(ordererId)).ToListAsync();
+            var orders = await context.Orders.Where(x => x.OrdererId.Equals(ordererId)).Include(x => x.Client).Include(x => x.Consultant)
+                .Include(x => x.ForwardingOrder).Include(x => x.Orderer).Include(x => x.OrderStatus)
+                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).ToListAsync();
             return orders;
         }
 
         public async Task<List<Order>> GetOrdersByConsultantAsync(int consultantId)
 
         {
-            var orders = await context.Orders.Where(x => x.ConsultantId.Equals(consultantId)).ToListAsync();
+            var orders = await context.Orders.Where(x => x.ConsultantId.Equals(consultantId)).Include(x => x.Client).Include(x => x.Consultant)
+                .Include(x => x.ForwardingOrder).Include(x => x.Orderer).Include(x => x.OrderStatus)
+                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).ToListAsync();
             return orders;
         }
 
         public async Task<List<Order>> GetOrdersByForwardingOrderAsync(int forwardingOrderId)
         {
-            var orders = await context.Orders.Where(x => x.ForwardingOrderId.Equals(forwardingOrderId)).ToListAsync();
+            var orders = await context.Orders.Where(x => x.ForwardingOrderId.Equals(forwardingOrderId))
+                .Include(x => x.Client).Include(x => x.Consultant)
+                .Include(x => x.ForwardingOrder).Include(x => x.Orderer).Include(x => x.OrderStatus)
+                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).ToListAsync();
             return orders;
         }
         public async Task<Order> GetOrderByIdAsync(int id)
         {
-            var order = await context.Orders.SingleOrDefaultAsync(x => x.Id.Equals(id));
+            var order = await context.Orders.Include(x => x.Client).Include(x => x.Consultant)
+                .Include(x => x.ForwardingOrder).Include(x => x.Orderer).Include(x => x.OrderStatus)
+                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).SingleOrDefaultAsync(x => x.Id.Equals(id));
             return order;
         }
 
@@ -79,7 +94,9 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<Order> GetLastOrderAsync()
         {
-            var lastOrder = await context.Orders.OrderByDescending(x => x.Id).SingleOrDefaultAsync();
+            var lastOrder = await context.Orders.OrderByDescending(x => x.Id).Include(x => x.Client).Include(x => x.Consultant)
+                .Include(x => x.ForwardingOrder).Include(x => x.Orderer).Include(x => x.OrderStatus)
+                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).SingleOrDefaultAsync();
             return lastOrder;
         }
     }

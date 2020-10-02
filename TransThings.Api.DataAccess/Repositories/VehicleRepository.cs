@@ -19,19 +19,19 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<List<Vehicle>> GetAllVehiclesAsync()
         {
-            var vehicles = await context.Vehicles.ToListAsync();
+            var vehicles = await context.Vehicles.Include(x => x.VehicleType).Include(x => x.Transporter).ToListAsync();
             return vehicles;
         }
 
         public async Task<List<Vehicle>> GetVehiclesByTransporter(int transporterId)
         {
-            var vehicles = await context.Vehicles.Where(x => x.TransporterId.Equals(transporterId)).ToListAsync();
+            var vehicles = await context.Vehicles.Include(x => x.VehicleType).Include(x => x.Transporter).Where(x => x.TransporterId.Equals(transporterId)).ToListAsync();
             return vehicles;
         }
 
         public async Task<Vehicle> GetVehicleByIdAsync(int id)
         {
-            var vehicle = await context.Vehicles.SingleOrDefaultAsync(x => x.Id.Equals(id));
+            var vehicle = await context.Vehicles.Include(x => x.VehicleType).Include(x => x.Transporter).SingleOrDefaultAsync(x => x.Id.Equals(id));
             return vehicle;
         }
 

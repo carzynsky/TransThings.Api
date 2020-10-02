@@ -53,9 +53,9 @@ namespace TransThings.Api.Controllers
         {
             var addLoadResult = await loadService.AddLoad(load);
             if (!addLoadResult.IsSuccessful)
-                return BadRequest(addLoadResult.Message);
+                return BadRequest(addLoadResult);
 
-            return Ok(addLoadResult.Message);
+            return Ok(addLoadResult);
         }
 
         [HttpPut("{id}")]
@@ -63,9 +63,9 @@ namespace TransThings.Api.Controllers
         {
             var updateLoadResult = await loadService.UpdateLoad(load, id);
             if (!updateLoadResult.IsSuccessful)
-                return BadRequest(updateLoadResult.Message);
+                return BadRequest(updateLoadResult);
 
-            return Ok(updateLoadResult.Message);
+            return Ok(updateLoadResult);
         }
 
         [HttpDelete("{id}")]
@@ -73,9 +73,9 @@ namespace TransThings.Api.Controllers
         {
             var removeLoadResult = await loadService.RemoveLoad(id);
             if (!removeLoadResult.IsSuccessful)
-                return BadRequest(removeLoadResult.Message);
+                return BadRequest(removeLoadResult);
 
-            return Ok(removeLoadResult.Message);
+            return Ok(removeLoadResult);
         }
     }
 }

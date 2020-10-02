@@ -44,9 +44,9 @@ namespace TransThings.Api.Controllers
         {
             var addEventResult = await eventService.AddEvent(_event);
             if (!addEventResult.IsSuccessful)
-                return BadRequest(addEventResult.Message);
+                return BadRequest(addEventResult);
 
-            return Ok(addEventResult.Message);
+            return Ok(addEventResult);
         }
 
         [HttpPut("{id}")]
@@ -54,9 +54,9 @@ namespace TransThings.Api.Controllers
         {
             var updateEventResult = await eventService.UpdateEvent(_event, id);
             if (!updateEventResult.IsSuccessful)
-                return BadRequest(updateEventResult.Message);
+                return BadRequest(updateEventResult);
 
-            return Ok(updateEventResult.Message);
+            return Ok(updateEventResult);
         }
 
         [HttpDelete("{id}")]
@@ -64,9 +64,9 @@ namespace TransThings.Api.Controllers
         {
             var removeEventResult = await eventService.RemoveEvent(id);
             if (!removeEventResult.IsSuccessful)
-                return BadRequest(removeEventResult.Message);
+                return BadRequest(removeEventResult);
 
-            return Ok(removeEventResult.Message);
+            return Ok(removeEventResult);
         }
     }
 }

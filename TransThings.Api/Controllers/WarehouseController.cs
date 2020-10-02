@@ -43,9 +43,9 @@ namespace TransThings.Api.Controllers
         {
             var addWarehouseResult = await warehouseService.AddWarehouse(warehouse);
             if (!addWarehouseResult.IsSuccessful)
-                return BadRequest(addWarehouseResult.Message);
+                return BadRequest(addWarehouseResult);
 
-            return Ok(addWarehouseResult.Message);
+            return Ok(addWarehouseResult);
         }
 
         [HttpPut("{id}")]
@@ -53,9 +53,9 @@ namespace TransThings.Api.Controllers
         {
             var updateWarehouseResult = await warehouseService.UpdateWarehouse(warehouse, id);
             if (!updateWarehouseResult.IsSuccessful)
-                return BadRequest(updateWarehouseResult.Message);
+                return BadRequest(updateWarehouseResult);
 
-            return Ok(updateWarehouseResult.Message);
+            return Ok(updateWarehouseResult);
         }
 
         [HttpDelete("{id}")]
@@ -63,9 +63,9 @@ namespace TransThings.Api.Controllers
         {
             var removeWarehouseResult = await warehouseService.RemoveWarehouse(id);
             if (!removeWarehouseResult.IsSuccessful)
-                return BadRequest(removeWarehouseResult.Message);
+                return BadRequest(removeWarehouseResult);
 
-            return Ok(removeWarehouseResult.Message);
+            return Ok(removeWarehouseResult);
         }
     }
 }

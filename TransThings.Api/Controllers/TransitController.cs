@@ -55,9 +55,9 @@ namespace TransThings.Api.Controllers
         {
             var addTransitResult = await transitService.AddTransit(transit);
             if (!addTransitResult.IsSuccessful)
-                return BadRequest(addTransitResult.Message);
+                return BadRequest(addTransitResult);
 
-            return Ok(addTransitResult.Message);
+            return Ok(addTransitResult);
         }
 
         [HttpPut("{id}")]
@@ -65,9 +65,9 @@ namespace TransThings.Api.Controllers
         {
             var updateTransitResult = await transitService.UpdateTransit(transit, id);
             if (!updateTransitResult.IsSuccessful)
-                return BadRequest(updateTransitResult.Message);
+                return BadRequest(updateTransitResult);
 
-            return Ok(updateTransitResult.Message);
+            return Ok(updateTransitResult);
         }
 
         [HttpDelete("{id}")]
@@ -75,9 +75,9 @@ namespace TransThings.Api.Controllers
         {
             var removeTransitResult = await transitService.RemoveTransit(id);
             if (!removeTransitResult.IsSuccessful)
-                return BadRequest(removeTransitResult.Message);
+                return BadRequest(removeTransitResult);
 
-            return Ok(removeTransitResult.Message);
+            return Ok(removeTransitResult);
         }
     }
 }

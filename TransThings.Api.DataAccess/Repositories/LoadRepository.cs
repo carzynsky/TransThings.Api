@@ -19,19 +19,19 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<List<Load>> GetAllLoadsAsync()
         {
-            var loads = await context.Loads.ToListAsync();
+            var loads = await context.Loads.Include(x => x.Order).ToListAsync();
             return loads;
         }
 
         public async Task<List<Load>> GetLoadsByOrderAsync(int orderId)
         {
-            var loads = await context.Loads.Where(x => x.OrderId.Equals(orderId)).ToListAsync();
+            var loads = await context.Loads.Where(x => x.OrderId.Equals(orderId)).Include(x => x.Order).ToListAsync();
             return loads;
         }
 
         public async Task<Load> GetLoadByIdAsync(int id)
         {
-            var load = await context.Loads.SingleOrDefaultAsync(x => x.Id.Equals(id));
+            var load = await context.Loads.Include(x => x.Order).SingleOrDefaultAsync(x => x.Id.Equals(id));
             return load;
         }
 

@@ -47,6 +47,7 @@ namespace TransThings.Api
             services.AddTransient<IOrderStatusService, OrderStatusService>();
             services.AddTransient<IPaymentFormService, PaymentFormService>();
             services.AddTransient<ITransitService, TransitService>();
+            services.AddTransient<ITransporterService, TransporterService>();
             services.AddTransient<ITransitForwardingOrderService, TransitForwardingOrderService>();
             services.AddTransient<IUserRoleService, UserRoleService>();
             services.AddTransient<IVehicleService, VehicleService>();

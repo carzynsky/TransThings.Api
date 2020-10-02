@@ -45,9 +45,9 @@ namespace TransThings.Api.Controllers
         {
             var addVehicleTypeResult = await vehicleTypeService.AddVehicleType(vehicleType);
             if (!addVehicleTypeResult.IsSuccessful)
-                return BadRequest(addVehicleTypeResult.Message);
+                return BadRequest(addVehicleTypeResult);
 
-            return Ok(addVehicleTypeResult.Message);
+            return Ok(addVehicleTypeResult);
         }
 
         [HttpPut("{id}")]
@@ -55,9 +55,9 @@ namespace TransThings.Api.Controllers
         {
             var updateVehicleTypeResult = await vehicleTypeService.UpdateVehicleType(vehicleType, id);
             if (!updateVehicleTypeResult.IsSuccessful)
-                return BadRequest(updateVehicleTypeResult.Message);
+                return BadRequest(updateVehicleTypeResult);
 
-            return Ok(updateVehicleTypeResult.Message);
+            return Ok(updateVehicleTypeResult);
         }
 
         [HttpDelete("{id}")]
@@ -65,9 +65,9 @@ namespace TransThings.Api.Controllers
         {
             var removeVehicleTypeResult = await vehicleTypeService.RemoveVehicleType(id);
             if (!removeVehicleTypeResult.IsSuccessful)
-                return BadRequest(removeVehicleTypeResult.Message);
+                return BadRequest(removeVehicleTypeResult);
 
-            return Ok(removeVehicleTypeResult.Message);
+            return Ok(removeVehicleTypeResult);
         }
     }
 }

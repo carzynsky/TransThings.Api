@@ -42,9 +42,9 @@ namespace TransThings.Api.Controllers
         {
             var addPaymentFormResult = await paymentFormService.AddPaymentForm(paymentForm);
             if (!addPaymentFormResult.IsSuccessful)
-                return BadRequest(addPaymentFormResult.Message);
+                return BadRequest(addPaymentFormResult);
 
-            return Ok(addPaymentFormResult.Message);
+            return Ok(addPaymentFormResult);
         }
 
         [HttpPut("{id}")]
@@ -52,9 +52,9 @@ namespace TransThings.Api.Controllers
         {
             var updatePaymentFormResult = await paymentFormService.UpdatePaymentForm(paymentForm, id);
             if (!updatePaymentFormResult.IsSuccessful)
-                return BadRequest(updatePaymentFormResult.Message);
+                return BadRequest(updatePaymentFormResult);
 
-            return Ok(updatePaymentFormResult.Message);
+            return Ok(updatePaymentFormResult);
         }
 
         [HttpDelete("{id}")]
@@ -62,9 +62,9 @@ namespace TransThings.Api.Controllers
         {
             var removePaymentFormResult = await paymentFormService.RemovePaymentForm(id);
             if (!removePaymentFormResult.IsSuccessful)
-                return BadRequest(removePaymentFormResult.Message);
+                return BadRequest(removePaymentFormResult);
 
-            return Ok(removePaymentFormResult.Message);
+            return Ok(removePaymentFormResult);
         }
     }
 }

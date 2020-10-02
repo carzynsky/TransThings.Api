@@ -17,19 +17,19 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<List<LoginHistory>> GetAllLoginHistoryAsync()
         {
-            var loginHistories = await context.LoginHistories.ToListAsync();
+            var loginHistories = await context.LoginHistories.Include(x => x.User).ToListAsync();
             return loginHistories;
         }
 
         public async Task<List<LoginHistory>> GetLoginHistoryByUserAsync(int userId)
         {
-            var loginHistories = await context.LoginHistories.Where(x => x.UserId.Equals(userId)).ToListAsync();
+            var loginHistories = await context.LoginHistories.Where(x => x.UserId.Equals(userId)).Include(x => x.User).ToListAsync();
             return loginHistories;
         }
 
         public async Task<List<LoginHistory>> GetLoginHistoryByUserIdAsync(int userId)
         {
-            var loginHistory = await context.LoginHistories.Where(x => x.UserId.Equals(userId)).ToListAsync();
+            var loginHistory = await context.LoginHistories.Where(x => x.UserId.Equals(userId)).Include(x => x.User).ToListAsync();
             return loginHistory;
         }
 

@@ -45,9 +45,9 @@ namespace TransThings.Api.Controllers
             var addClientResult = await clientService.AddClient(client);
 
             if (!addClientResult.IsSuccessful)
-                return BadRequest(addClientResult.Message);
+                return BadRequest(addClientResult);
 
-            return Ok(addClientResult.Message);
+            return Ok(addClientResult);
         }
 
         [HttpPut("{id}")]
@@ -56,9 +56,9 @@ namespace TransThings.Api.Controllers
             var updateClientResult = await clientService.UpdateClient(client, id);
 
             if (!updateClientResult.IsSuccessful)
-                return BadRequest(updateClientResult.Message);
+                return BadRequest(updateClientResult);
 
-            return Ok(updateClientResult.Message);
+            return Ok(updateClientResult);
         }
 
         [HttpDelete("{id}")]
@@ -67,9 +67,9 @@ namespace TransThings.Api.Controllers
             var removeClientResult = await clientService.RemoveClient(id);
 
             if (!removeClientResult.IsSuccessful)
-                return BadRequest(removeClientResult.Message);
+                return BadRequest(removeClientResult);
 
-            return Ok(removeClientResult.Message);
+            return Ok(removeClientResult);
         }
     }
 }

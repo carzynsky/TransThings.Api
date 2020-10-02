@@ -53,9 +53,9 @@ namespace TransThings.Api.Controllers
         {
             var addDriverResult = await driverService.AddDriver(driver);
             if (!addDriverResult.IsSuccessful)
-                return BadRequest(addDriverResult.Message);
+                return BadRequest(addDriverResult);
 
-            return Ok(addDriverResult.Message);
+            return Ok(addDriverResult);
         }
 
         [HttpPut("{id}")]
@@ -63,9 +63,9 @@ namespace TransThings.Api.Controllers
         {
             var updateDriverResult = await driverService.UpdateDriver(driver, id);
             if (!updateDriverResult.IsSuccessful)
-                return BadRequest(updateDriverResult.Message);
+                return BadRequest(updateDriverResult);
 
-            return Ok(updateDriverResult.Message);
+            return Ok(updateDriverResult);
         }
 
         [HttpDelete("{id}")]
@@ -73,9 +73,9 @@ namespace TransThings.Api.Controllers
         {
             var removeDriverResult = await driverService.RemoveDriver(id);
             if (!removeDriverResult.IsSuccessful)
-                return BadRequest(removeDriverResult.Message);
+                return BadRequest(removeDriverResult);
 
-            return Ok(removeDriverResult.Message);
+            return Ok(removeDriverResult);
         }
     }
 }
