@@ -37,5 +37,15 @@ namespace TransThings.Api.Controllers
 
             return Ok(loginHistories);
         }
+
+        [HttpDelete("users/{id}")]
+        public async Task<ActionResult> RemoveLoginHistoryByUser(int id)
+        {
+            var removeLoginHistoryResult = await loginHistoryService.RemoveLoginHistoryByUser(id);
+            if (!removeLoginHistoryResult.IsSuccessful)
+                return BadRequest(removeLoginHistoryResult);
+
+            return Ok(removeLoginHistoryResult);
+        }
     }
 }

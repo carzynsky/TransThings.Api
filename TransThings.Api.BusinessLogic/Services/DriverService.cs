@@ -56,9 +56,9 @@ namespace TransThings.Api.BusinessLogic.Services
             else if (driver.Gender == 'k')
                 driver.Gender = 'K';
 
-            bool isPeselValid = PeselValidator.Validate(driver.PeselNumber, driver.Gender, driver.BirthDate);
+           /* bool isPeselValid = PeselValidator.Validate(driver.PeselNumber, driver.Gender, driver.BirthDate);
             if (!isPeselValid)
-                return new GenericResponse(false, "Incorrect pesel number.");
+                return new GenericResponse(false, "Incorrect pesel number.");*/
 
             var driverAlreadyInDb = await unitOfWork.DriverRepository.GetDriverByPeselNumberAsync(driver.PeselNumber);
             if (driverAlreadyInDb != null)
@@ -124,9 +124,9 @@ namespace TransThings.Api.BusinessLogic.Services
             if (string.IsNullOrEmpty(driver.PeselNumber))
                 return new GenericResponse(false, "Pesel number has not been provided.");
 
-            bool isPeselValid = PeselValidator.Validate(driver.PeselNumber, driver.Gender, driver.BirthDate);
+           /* bool isPeselValid = PeselValidator.Validate(driver.PeselNumber, driver.Gender, driver.BirthDate);
             if (!isPeselValid)
-                return new GenericResponse(false, "Incorrect pesel number.");
+                return new GenericResponse(false, "Incorrect pesel number.");*/
 
             var driverToUpdate = await unitOfWork.DriverRepository.GetDriverByIdAsync(id);
             if (driverToUpdate == null)

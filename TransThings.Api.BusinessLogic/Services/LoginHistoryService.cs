@@ -77,5 +77,27 @@ namespace TransThings.Api.BusinessLogic.Services
 
             return false;
         }
+
+        public async Task<GenericResponse> RemoveLoginHistoryByUser(int userId)
+        {
+            var historyToRemove = await unitOfWork.LoginHistoryRepository.GetLoginHistoryByUserIdAsync(userId);
+            if (historyToRemove == null)
+                return new GenericResponse(false, "User with given id does not exist.");
+
+            try
+            {
+                await unitOfWork.LoginHistoryRepository.RemoveManyLoginHistory(historyToRemove);
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return new GenericResponse(false, ex.InnerException.Message);
+            }
+            catch (DbUpdateException ex)
+            {
+                return new GenericResponse(false, ex.InnerException.Message);
+            }
+
+            return new GenericResponse(true, "Historia logowań użytkownika została usunięta.");
+        }
     }
 }

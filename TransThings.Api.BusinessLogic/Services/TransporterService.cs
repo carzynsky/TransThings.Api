@@ -93,7 +93,7 @@ namespace TransThings.Api.BusinessLogic.Services
 
             try
             {
-                await unitOfWork.TransporterRepository.RemoveTransporter(transporterToUpdate);
+                await unitOfWork.TransporterRepository.UpdateTransporter(transporterToUpdate);
             }
             catch (DbUpdateConcurrencyException ex)
             {

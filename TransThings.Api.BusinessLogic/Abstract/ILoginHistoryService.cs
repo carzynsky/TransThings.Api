@@ -11,5 +11,6 @@ namespace TransThings.Api.BusinessLogic.Abstract
         Task<List<LoginHistory>> GetLoginHistoryByUser(int userId);
         Task<GenericResponse> AddLoginHistory(int userId, bool wasSuccessful);
         Task<bool> CheckIfLogInShouldBeBlocked(int userId);
+        Task<GenericResponse> RemoveLoginHistoryByUser(int userId);
     }
 }

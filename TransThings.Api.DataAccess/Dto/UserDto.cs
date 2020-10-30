@@ -17,5 +17,6 @@ namespace TransThings.Api.DataAccess.Dto
         public string Mail { get; set; }
         public string PhoneNumber { get; set; }
         public int UserRoleId { get; set; }
+        public string UserRole { get; set; }
     }
 }

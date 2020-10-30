@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace TransThings.Api.BusinessLogic.Services
                 return null;
 
             List<UserDto> usersDto = new List<UserDto>();
+
             foreach(var user in users)
             {
                 usersDto.Add(new UserDto()
@@ -39,7 +41,8 @@ namespace TransThings.Api.BusinessLogic.Services
                     Login = user.Login,
                     Mail = user.Mail,
                     PhoneNumber = user.PhoneNumber,
-                    UserRoleId = user.UserRoleId
+                    UserRoleId = user.UserRoleId,
+                    UserRole = user.UserRole.RoleName
                 });
             }
             return usersDto;
@@ -65,7 +68,8 @@ namespace TransThings.Api.BusinessLogic.Services
                     Login = user.Login,
                     Mail = user.Mail,
                     PhoneNumber = user.PhoneNumber,
-                    UserRoleId = user.UserRoleId
+                    UserRoleId = user.UserRoleId,
+                    UserRole = user.UserRole.RoleName
                 });
             }
             return usersDto;
@@ -86,9 +90,11 @@ namespace TransThings.Api.BusinessLogic.Services
                 BirthDate = user.BirthDate,
                 DateOfEmployment = user.DateOfEmployment,
                 Login = user.Login,
+                PeselNumber = user.PeselNumber,
                 Mail = user.Mail,
                 PhoneNumber = user.PhoneNumber,
-                UserRoleId = user.UserRoleId
+                UserRoleId = user.UserRoleId,
+                UserRole = user.UserRole.RoleName
             };
             return userDto;
         }

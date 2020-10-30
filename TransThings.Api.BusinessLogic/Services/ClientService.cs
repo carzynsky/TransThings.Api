@@ -49,11 +49,11 @@ namespace TransThings.Api.BusinessLogic.Services
             else if (client.Gender == 'k')
                 client.Gender = 'K';
 
-            bool isPeselValid = PeselValidator.Validate(client.ClientPeselNumber, client.Gender, client.BirthDate);
+            /*bool isPeselValid = PeselValidator.Validate(client.ClientPeselNumber, client.Gender, client.BirthDate);
             if (!isPeselValid)
-                return new GenericResponse(false, "Pesel number is incorrect.");
+                return new GenericResponse(false, "Pesel number is incorrect.");*/
 
-            var clientAlreadyInDb = unitOfWork.ClientRepository.GetClientByPeselNumberAsync(client.ClientPeselNumber);
+            var clientAlreadyInDb = await unitOfWork.ClientRepository.GetClientByPeselNumberAsync(client.ClientPeselNumber);
             if (clientAlreadyInDb != null)
                 return new GenericResponse(false, "Client with given Pesel number already exists.");
 
@@ -111,9 +111,9 @@ namespace TransThings.Api.BusinessLogic.Services
             else if (client.Gender == 'k')
                 client.Gender = 'K';
 
-            bool isPeselValid = PeselValidator.Validate(client.ClientPeselNumber, client.Gender, client.BirthDate);
+           /* bool isPeselValid = PeselValidator.Validate(client.ClientPeselNumber, client.Gender, client.BirthDate);
             if (!isPeselValid)
-                return new GenericResponse(false, "Pesel number is incorrect.");
+                return new GenericResponse(false, "Pesel number is incorrect.");*/
 
             clientToUpdate.ClientFirstName = client.ClientFirstName;
             clientToUpdate.ClientLastName = client.ClientLastName;

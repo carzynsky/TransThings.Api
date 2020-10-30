@@ -50,5 +50,11 @@ namespace TransThings.Api.DataAccess.Repositories
             context.LoginHistories.Remove(LoginHistory);
             await context.SaveChangesAsync();
         }
+
+        public async Task RemoveManyLoginHistory(List<LoginHistory> loginHistoryOfUser)
+        {
+            context.RemoveRange(loginHistoryOfUser);
+            await context.SaveChangesAsync();
+        }
     }
 }
