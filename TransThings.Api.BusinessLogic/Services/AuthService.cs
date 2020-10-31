@@ -34,18 +34,18 @@ namespace TransThings.Api.BusinessLogic.Services
             bool isPasswordNullOrEmpty = string.IsNullOrEmpty(authUser.Password);
 
             if (isLoginNullOrEmpty && isPasswordNullOrEmpty)
-                return new AuthenticateResponse(AuthResponseMessage.LoginAndPasswordNotProvided, null, null, null);
+                return new AuthenticateResponse(AuthResponseMessage.LoginAndPasswordNotProvided, null, null, null, null);
 
             else if (isLoginNullOrEmpty)
-                return new AuthenticateResponse(AuthResponseMessage.LoginNotProvided, null, null, null);
+                return new AuthenticateResponse(AuthResponseMessage.LoginNotProvided, null, null, null, null);
 
             else if (isPasswordNullOrEmpty)
-                return new AuthenticateResponse(AuthResponseMessage.PasswordNotProvided, null, null, null);
+                return new AuthenticateResponse(AuthResponseMessage.PasswordNotProvided, null, null, null, null);
 
             var userWithAuthLogin = await unitOfWork.UserRepository.GetUserByLoginAsync(authUser.Login);
 
             if (userWithAuthLogin == null)
-                return new AuthenticateResponse(AuthResponseMessage.UserWithThisLoginNotExists, null, null, null);
+                return new AuthenticateResponse(AuthResponseMessage.UserWithThisLoginNotExists, null,null, null, null);
 
             HashPassword hash = new HashPassword(authUser.Password);
             if (userWithAuthLogin.Password.Equals(hash.HashedPassword))
@@ -54,11 +54,11 @@ namespace TransThings.Api.BusinessLogic.Services
                 var authResponseData = Authenticate(userWithAuthLogin, userRole);
 
                 if (authResponseData == null)
-                    return new AuthenticateResponse(AuthResponseMessage.ErrorWhileGeneratingToken, null, null, null);
+                    return new AuthenticateResponse(AuthResponseMessage.ErrorWhileGeneratingToken, null, null, null, null);
 
                 return authResponseData;
             }
-            return new AuthenticateResponse(AuthResponseMessage.WrongPassword, null, null, null);
+            return new AuthenticateResponse(AuthResponseMessage.WrongPassword, null, null, null, null);
         }
 
         /// <summary>
@@ -87,13 +87,12 @@ namespace TransThings.Api.BusinessLogic.Services
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
-                return new AuthenticateResponse(AuthResponseMessage.LoggedSucessfuly, user.UserRole.RoleName, user.Login, tokenHandler.WriteToken(token));
+                return new AuthenticateResponse(AuthResponseMessage.LoggedSucessfuly, user.Id, user.UserRole.RoleName, user.Login, tokenHandler.WriteToken(token));
             }
             catch (Exception ex)
             {
                 return null;
             }
-
         }
     }
 }

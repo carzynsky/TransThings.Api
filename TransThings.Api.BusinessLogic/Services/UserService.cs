@@ -120,9 +120,9 @@ namespace TransThings.Api.BusinessLogic.Services
             else if (userDto.Gender == 'k')
                 userDto.Gender = 'K';
 
-            bool isPeselValid = PeselValidator.Validate(userDto.PeselNumber, userDto.Gender, userDto.BirthDate);
+           /* bool isPeselValid = PeselValidator.Validate(userDto.PeselNumber, userDto.Gender, userDto.BirthDate);
             if (!isPeselValid)
-                return new AddUserResponse(false, "Pesel number is incorrect.", null);
+                return new AddUserResponse(false, "Pesel number is incorrect.", null);*/
 
             User newUser = new User()
             {
@@ -245,9 +245,9 @@ namespace TransThings.Api.BusinessLogic.Services
             else if (userDto.Gender == 'k')
                 userDto.Gender = 'K';
 
-            bool isPeselValid = PeselValidator.Validate(userDto.PeselNumber, userDto.Gender, userDto.BirthDate);
+            /*bool isPeselValid = PeselValidator.Validate(userDto.PeselNumber, userDto.Gender, userDto.BirthDate);
             if (!isPeselValid)
-                return new GenericResponse(false, "Pesel number is incorrect.");
+                return new GenericResponse(false, "Pesel number is incorrect.");*/
 
             userToUpdate.FirstName = userDto.FirstName;
             userToUpdate.LastName = userDto.LastName;
@@ -258,6 +258,7 @@ namespace TransThings.Api.BusinessLogic.Services
             userToUpdate.PeselNumber = userDto.PeselNumber;
             userToUpdate.PhoneNumber = userDto.PhoneNumber;
             userToUpdate.UserRoleId = userDto.UserRoleId;
+            userToUpdate.Gender = userDto.Gender;
 
             try
             {
