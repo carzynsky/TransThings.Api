@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
+using TransThings.Api.BusinessLogic.Constants;
 using TransThings.Api.BusinessLogic.Helpers;
 using TransThings.Api.DataAccess.Dto;
 using TransThings.Api.DataAccess.Models;
@@ -35,13 +36,13 @@ namespace TransThings.Api.BusinessLogic.Services
         public async Task<GenericResponse> AddClient(Client client)
         {
             if (client == null)
-                return new GenericResponse(false, "Client's data has not been provided.");
+                return new GenericResponse(false, ClientResponseMessage.ClientDataNotProvided);
 
             if (string.IsNullOrEmpty(client.ClientFirstName) || string.IsNullOrEmpty(client.ClientLastName))
-                return new GenericResponse(false, "Client's personal data information has not been provided.");
+                return new GenericResponse(false, ClientResponseMessage.FirstNameOrLastNameNotProvided);
 
             if (client.Gender != 'm' && client.Gender != 'M' && client.Gender != 'k' && client.Gender != 'K')
-                return new GenericResponse(false, "Incorrect gender has been provided.");
+                return new GenericResponse(false, ClientResponseMessage.IncorrectGender);
 
             if (client.Gender == 'm')
                 client.Gender = 'M';
@@ -55,7 +56,7 @@ namespace TransThings.Api.BusinessLogic.Services
 
             var clientAlreadyInDb = await unitOfWork.ClientRepository.GetClientByPeselNumberAsync(client.ClientPeselNumber);
             if (clientAlreadyInDb != null)
-                return new GenericResponse(false, "Client with given Pesel number already exists.");
+                return new GenericResponse(false, ClientResponseMessage.ClientWithGivenPeselAlreadyExists);
 
             try
             {
@@ -69,14 +70,14 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "New client has been added.");
+            return new GenericResponse(true, ClientResponseMessage.ClientCreated);
         }
 
         public async Task<GenericResponse> RemoveClient(int id)
         {
             var clientToRemove = await unitOfWork.ClientRepository.GetClientByIdAsync(id);
             if (clientToRemove == null)
-                return new GenericResponse(false, $"Client with id={id} not exist.");
+                return new GenericResponse(false, ClientResponseMessage.ClientWithGivenIdNotExists);
 
             try
             {
@@ -90,20 +91,20 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "Client has been removed.");
+            return new GenericResponse(true, ClientResponseMessage.ClientRemoved);
         }
 
         public async Task<GenericResponse> UpdateClient(Client client, int id)
         {
             if (client == null)
-                return new GenericResponse(false, "No client has been provided");
+                return new GenericResponse(false, ClientResponseMessage.ClientDataNotProvided);
 
             var clientToUpdate = await unitOfWork.ClientRepository.GetClientByIdAsync(id);
             if (clientToUpdate == null)
-                return new GenericResponse(false, $"Client with id={id} does not exist.");
+                return new GenericResponse(false, ClientResponseMessage.ClientWithGivenIdNotExists);
 
             if (client.Gender != 'm' && client.Gender != 'M' && client.Gender != 'k' && client.Gender != 'K')
-                return new GenericResponse(false, "Incorrect gender has been provided.");
+                return new GenericResponse(false, ClientResponseMessage.IncorrectGender);
 
             if (client.Gender == 'm')
                 client.Gender = 'M';
@@ -144,7 +145,7 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "Client has been updated.");
+            return new GenericResponse(true, ClientResponseMessage.ClientUpdated);
         }
     }
 }

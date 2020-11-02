@@ -151,7 +151,7 @@ namespace TransThings.Api.BusinessLogic.Services
 
             int lastForwardingOrderId;
             var lastForwardingOrder = await unitOfWork.ForwardingOrderRepository.GetLastForwardingOrderAsync();
-            lastForwardingOrderId = lastForwardingOrder is null ? 1 : lastForwardingOrder.Id;
+            lastForwardingOrderId = lastForwardingOrder is null ? 1 : lastForwardingOrder.Id++;
 
             return string.Concat(prefix, "-", todayDate, "-", timeNow, "-", lastForwardingOrderId);
         }

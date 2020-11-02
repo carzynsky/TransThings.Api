@@ -167,7 +167,7 @@ namespace TransThings.Api.BusinessLogic.Services
 
             int lastOrderId;
             var lastOrder = await unitOfWork.OrderRepository.GetLastOrderAsync();
-            lastOrderId = lastOrder is null ? 1 : lastOrder.Id;
+            lastOrderId = lastOrder is null ? 1 : lastOrder.Id++;
 
             return string.Concat(prefix, "-", todayDate, "-", timeNow, "-", lastOrderId);
         }

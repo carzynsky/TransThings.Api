@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
+using TransThings.Api.BusinessLogic.Constants;
 using TransThings.Api.BusinessLogic.Helpers;
 using TransThings.Api.DataAccess.Models;
 using TransThings.Api.DataAccess.RepositoryPattern;
@@ -34,7 +35,7 @@ namespace TransThings.Api.BusinessLogic.Services
         public async Task<GenericResponse> AddTransporter(Transporter transporter)
         {
             if (transporter == null)
-                return new GenericResponse(false, "No transporter has been provided.");
+                return new GenericResponse(false, TransporterResponseMessage.TransporterDataNotProvided);
 
             try
             {
@@ -48,14 +49,14 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "New transporter has been created.");
+            return new GenericResponse(true, TransporterResponseMessage.TransporterCreated);
         }
 
         public async Task<GenericResponse> RemoveTransporter(int id)
         {
             var transporterToRemove = await unitOfWork.TransporterRepository.GetTransporterByIdAsync(id);
             if (transporterToRemove == null)
-                return new GenericResponse(false, $"Transporter with id={id} does not exist.");
+                return new GenericResponse(false, TransporterResponseMessage.TransporterWithGivenIdNotExists);
 
             try
             {
@@ -69,17 +70,17 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "Transporter has been removed.");
+            return new GenericResponse(true, TransporterResponseMessage.TransporterRemoved);
         }
 
         public async Task<GenericResponse> UpdateTransporter(Transporter transporter, int id)
         {
             if (transporter == null)
-                return new GenericResponse(false, "No transporter has been provided.");
+                return new GenericResponse(false, TransporterResponseMessage.TransporterDataNotProvided);
 
             var transporterToUpdate = await unitOfWork.TransporterRepository.GetTransporterByIdAsync(id);
             if (transporterToUpdate == null)
-                return new GenericResponse(false, $"Transporter with id={id} does not exist.");
+                return new GenericResponse(false, TransporterResponseMessage.TransporterWithGivenIdNotExists);
 
             transporterToUpdate.City = transporter.City;
             transporterToUpdate.Country = transporter.Country;
@@ -103,7 +104,7 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "Transporter has been updated.");
+            return new GenericResponse(true, TransporterResponseMessage.TransporterUpdated);
         }
     }
 }

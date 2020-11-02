@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
+using TransThings.Api.BusinessLogic.Constants;
 using TransThings.Api.BusinessLogic.Helpers;
 using TransThings.Api.DataAccess.Models;
 using TransThings.Api.DataAccess.RepositoryPattern;
@@ -39,16 +40,19 @@ namespace TransThings.Api.BusinessLogic.Services
         public async Task<GenericResponse> AddDriver(Driver driver)
         {
             if (driver == null)
-                return new GenericResponse(false, "Driver has not been provided.");
+                return new GenericResponse(false, DriverResponseMessage.DriverDataNotProvided);
 
             if (string.IsNullOrEmpty(driver.FirstName) || string.IsNullOrEmpty(driver.LastName))
-                return new GenericResponse(false, "First name or last name has not been provided.");
+                return new GenericResponse(false, DriverResponseMessage.FirstNameOrLastNameNotProvided);
 
             if (string.IsNullOrEmpty(driver.PeselNumber))
-                return new GenericResponse(false, "Pesel number has not been provided.");
+                return new GenericResponse(false, DriverResponseMessage.PeselNumberNotProvided);
+
+            if (driver.BirthDate == null)
+                return new GenericResponse(false, DriverResponseMessage.DriverBirthdateNotProvided);
 
             if (driver.Gender != 'm' && driver.Gender != 'M' && driver.Gender != 'k' && driver.Gender != 'K')
-                return new GenericResponse(false, "Incorrect gender has been provided.");
+                return new GenericResponse(false, DriverResponseMessage.IncorrectGender);
 
             if (driver.Gender == 'm')
                 driver.Gender = 'M';
@@ -62,7 +66,7 @@ namespace TransThings.Api.BusinessLogic.Services
 
             var driverAlreadyInDb = await unitOfWork.DriverRepository.GetDriverByPeselNumberAsync(driver.PeselNumber);
             if (driverAlreadyInDb != null)
-                return new GenericResponse(false, "Driver already exists.");
+                return new GenericResponse(false, DriverResponseMessage.DriverWithGivenPeselAlreadyExists);
 
             try
             {
@@ -77,14 +81,14 @@ namespace TransThings.Api.BusinessLogic.Services
                 return new GenericResponse(false, ex.InnerException.Message);
             }
 
-            return new GenericResponse(true, "New driver has been added.");
+            return new GenericResponse(true, DriverResponseMessage.DriverCreated);
         }
 
         public async Task<GenericResponse> RemoveDriver(int id)
         {
             var driverToRemove = await unitOfWork.DriverRepository.GetDriverByIdAsync(id);
             if (driverToRemove == null)
-                return new GenericResponse(false, $"Driver with id={id} does not exist.");
+                return new GenericResponse(false, DriverResponseMessage.DriverWithGivenIdNotExists);
             try
             {
                 await unitOfWork.DriverRepository.RemoveDriver(driverToRemove);
@@ -97,22 +101,22 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "Driver has been removed.");
+            return new GenericResponse(true, DriverResponseMessage.DriverRemoved);
         }
 
         public async Task<GenericResponse> UpdateDriver(Driver driver, int id)
         {
             if (driver == null)
-                return new GenericResponse(false, "Driver has not been provided.");
+                return new GenericResponse(false, DriverResponseMessage.DriverDataNotProvided);
 
             if (string.IsNullOrEmpty(driver.FirstName) || string.IsNullOrEmpty(driver.LastName))
-                return new GenericResponse(false, "First name or last name has not been provided.");
+                return new GenericResponse(false, DriverResponseMessage.FirstNameOrLastNameNotProvided);
 
             if (driver.BirthDate == null)
-                return new GenericResponse(false, "Birthdate has not been provided.");
+                return new GenericResponse(false, DriverResponseMessage.DriverBirthdateNotProvided);
 
             if (driver.Gender != 'm' && driver.Gender != 'M' && driver.Gender != 'k' && driver.Gender != 'K')
-                return new GenericResponse(false, "Incorrect gender has been provided.");
+                return new GenericResponse(false, DriverResponseMessage.IncorrectGender);
 
             if (driver.Gender == 'm')
                 driver.Gender = 'M';
@@ -122,7 +126,7 @@ namespace TransThings.Api.BusinessLogic.Services
 
 
             if (string.IsNullOrEmpty(driver.PeselNumber))
-                return new GenericResponse(false, "Pesel number has not been provided.");
+                return new GenericResponse(false, DriverResponseMessage.PeselNumberNotProvided);
 
            /* bool isPeselValid = PeselValidator.Validate(driver.PeselNumber, driver.Gender, driver.BirthDate);
             if (!isPeselValid)
@@ -130,7 +134,7 @@ namespace TransThings.Api.BusinessLogic.Services
 
             var driverToUpdate = await unitOfWork.DriverRepository.GetDriverByIdAsync(id);
             if (driverToUpdate == null)
-                return new GenericResponse(false, $"Driver with id={id} does not exist.");
+                return new GenericResponse(false, DriverResponseMessage.DriverWithGivenIdNotExists);
 
             driverToUpdate.BirthDate = driver.BirthDate;
             driverToUpdate.ContactPhoneNumber = driver.ContactPhoneNumber;
@@ -153,7 +157,7 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "Driver has been updated.");
+            return new GenericResponse(true, DriverResponseMessage.DriverUpdated);
         }
     }
 }

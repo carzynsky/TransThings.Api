@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
+using TransThings.Api.BusinessLogic.Constants;
 using TransThings.Api.BusinessLogic.Helpers;
 using TransThings.Api.DataAccess.Dto;
 using TransThings.Api.DataAccess.Models;
@@ -102,17 +103,17 @@ namespace TransThings.Api.BusinessLogic.Services
         public async Task<AddUserResponse> AddUser(UserDto userDto)
         {
             if (userDto == null)
-                return new AddUserResponse(false, "User data has not been provided.", null);
+                return new AddUserResponse(false, UserResponseMessage.UserDataNotProvided, null);
 
             if (string.IsNullOrEmpty(userDto.FirstName) || string.IsNullOrEmpty(userDto.LastName) || userDto == null || string.IsNullOrEmpty(userDto.Login))
-                return new AddUserResponse(false, "You haven not provided enough data.", null);
+                return new AddUserResponse(false, UserResponseMessage.FirstNameOrLastNameOrLoginNotProvided, null);
 
             var userWithGivenLogin = await unitOfWork.UserRepository.GetUserByLoginAsync(userDto.Login);
             if (userWithGivenLogin != null)
-                return new AddUserResponse(false, "User with given login already exists.", null);
+                return new AddUserResponse(false, UserResponseMessage.UserWithGivenLoginAlreadyExists, null);
 
             if (userDto.Gender != 'm' && userDto.Gender != 'M' && userDto.Gender != 'k' && userDto.Gender != 'K')
-                return new AddUserResponse(false, "Incorrect gender has been provided.", null);
+                return new AddUserResponse(false, UserResponseMessage.IncorrectGender, null);
 
             if (userDto.Gender == 'm')
                 userDto.Gender = 'M';
@@ -153,31 +154,35 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new AddUserResponse(false, ex.InnerException.Message, null);
             }
-            return new AddUserResponse(true, "New user has been created.", password);
+            return new AddUserResponse(true, UserResponseMessage.NewUserCreated, password);
         }
 
         public async Task<GenericResponse> ChangePassword(ChangePasswordData changePasswordData, int id)
         {
             if (changePasswordData == null)
-                return new GenericResponse(false, "No data has been provided.");
+                return new GenericResponse(false, UserResponseMessage.UserDataNotProvided);
 
             if (string.IsNullOrEmpty(changePasswordData.NewPassword) || string.IsNullOrEmpty(changePasswordData.NewPasswordAgain))
-                return new GenericResponse(false, "New password has not been provided.");
+                return new GenericResponse(false, UserResponseMessage.NewPasswordNotProvided);
 
             if (changePasswordData.NewPassword != changePasswordData.NewPasswordAgain)
-                return new GenericResponse(false, "Provided passwords are not identical.");
+                return new GenericResponse(false, UserResponseMessage.NewPasswordsNotIdentical);
 
             var userToUpdatePassword = await unitOfWork.UserRepository.GetUserByIdAsync(id);
             if (userToUpdatePassword == null)
-                return new GenericResponse(false, "User with given id does not exist.");
+                return new GenericResponse(false, UserResponseMessage.UserWithGivenIdNotExists);
+
+            var oldPasswordHashed = new HashPassword(changePasswordData.OldPassword);
+            if (userToUpdatePassword.Password != oldPasswordHashed.HashedPassword)
+                return new GenericResponse(false, UserResponseMessage.IncorrectOldPassword);
 
             HashPassword hash = new HashPassword(changePasswordData.NewPassword);
             if (userToUpdatePassword.Password == hash.HashedPassword)
-                return new GenericResponse(false, "New password has to be different than the old one.");
+                return new GenericResponse(false, UserResponseMessage.NewPasswordHasToBeDifferent);
 
             bool isPasswordSecure = IsPasswordSecure(changePasswordData.NewPassword, userToUpdatePassword.FirstName, userToUpdatePassword.LastName, userToUpdatePassword.Login);
             if (!isPasswordSecure)
-                return new GenericResponse(false, "This password is not safe.");
+                return new GenericResponse(false, UserResponseMessage.NotSafePassword);
 
             hash = new HashPassword(changePasswordData.NewPassword);
             userToUpdatePassword.Password = hash.HashedPassword;
@@ -193,14 +198,14 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "Password has been changed.");
+            return new GenericResponse(true, UserResponseMessage.PasswordChanged);
         }
 
         public async Task<GenericResponse> RemoveUser(int userId)
         {
             var userToRemove = await unitOfWork.UserRepository.GetUserByIdAsync(userId);
             if (userToRemove == null)
-                return new GenericResponse(false, "User with given id does not exist.");
+                return new GenericResponse(false, UserResponseMessage.UserWithGivenIdNotExists);
 
             try
             {
@@ -214,30 +219,27 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "User has been removed.");
+            return new GenericResponse(true, UserResponseMessage.UserRemoved);
         }
 
         public async Task<GenericResponse> UpdateUser(UserDto userDto, int id)
         {
             if (userDto == null)
-                return new GenericResponse(false, "User has not been provided.");
+                return new GenericResponse(false, UserResponseMessage.UserDataNotProvided);
 
             var userToUpdate = await unitOfWork.UserRepository.GetUserByIdAsync(id);
             if (userToUpdate == null)
-                return new GenericResponse(false, "User with given id does not exist.");
+                return new GenericResponse(false, UserResponseMessage.UserWithGivenIdNotExists);
 
-            if (string.IsNullOrEmpty(userDto.FirstName) || string.IsNullOrEmpty(userDto.LastName))
-                return new GenericResponse(false, "First name or last name data is incorrect.");
-
-            if (string.IsNullOrEmpty(userDto.Login))
-                return new GenericResponse(false, "Login cannot be null or empty.");
+            if (string.IsNullOrEmpty(userDto.FirstName) || string.IsNullOrEmpty(userDto.LastName) || string.IsNullOrEmpty(userDto.Login))
+                return new GenericResponse(false, UserResponseMessage.FirstNameOrLastNameOrLoginNotProvided);
 
             var userWithThisLogin = await unitOfWork.UserRepository.GetUserByLoginAsync(userDto.Login);
             if (userWithThisLogin != null && userToUpdate.Login != userDto.Login)
-                return new GenericResponse(false, "Cannot change login name, because provided one is taken by another user.");
+                return new GenericResponse(false, UserResponseMessage.UserWithGivenLoginAlreadyExists);
 
             if (userDto.Gender != 'm' && userDto.Gender != 'M' && userDto.Gender != 'k' && userDto.Gender != 'K')
-                return new GenericResponse(false, "Incorrect gender has been provided.");
+                return new GenericResponse(false, UserResponseMessage.IncorrectGender);
 
             if (userDto.Gender == 'm')
                 userDto.Gender = 'M';
@@ -272,7 +274,7 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "User has been updated.");
+            return new GenericResponse(true, UserResponseMessage.UserUpdated);
 
         }
 
