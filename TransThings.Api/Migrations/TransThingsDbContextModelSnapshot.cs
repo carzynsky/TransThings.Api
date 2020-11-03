@@ -322,7 +322,7 @@ namespace TransThings.Api.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ConsultantId")
+                    b.Property<int?>("ConsultantId")
                         .HasColumnType("int");
 
                     b.Property<string>("CustomerAddtionalInstructions")
@@ -345,25 +345,25 @@ namespace TransThings.Api.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<int>("ForwardingOrderId")
+                    b.Property<int?>("ForwardingOrderId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("GrossPrice")
+                    b.Property<decimal?>("GrossPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<bool>("IsAvailableAtWarehouse")
+                    b.Property<bool?>("IsAvailableAtWarehouse")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsClientVerified")
+                    b.Property<bool?>("IsClientVerified")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("NetPrice")
+                    b.Property<decimal?>("NetPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("OrderCreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("OrderExpectedDate")
+                    b.Property<DateTime?>("OrderExpectedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OrderNumber")
@@ -371,7 +371,7 @@ namespace TransThings.Api.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
-                    b.Property<DateTime>("OrderRealizationDate")
+                    b.Property<DateTime?>("OrderRealizationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("OrderStatusId")
@@ -383,19 +383,19 @@ namespace TransThings.Api.Migrations
                     b.Property<int>("PaymentFormId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalGrossWeight")
+                    b.Property<decimal?>("TotalGrossWeight")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TotalNetWeight")
+                    b.Property<decimal?>("TotalNetWeight")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TotalVolume")
+                    b.Property<decimal?>("TotalVolume")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TransportDistance")
+                    b.Property<decimal?>("TransportDistance")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("VehicleTypeId")
+                    b.Property<int?>("VehicleTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("WarehouseId")
@@ -827,15 +827,11 @@ namespace TransThings.Api.Migrations
 
                     b.HasOne("TransThings.Api.DataAccess.Models.User", "Consultant")
                         .WithMany()
-                        .HasForeignKey("ConsultantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ConsultantId");
 
                     b.HasOne("TransThings.Api.DataAccess.Models.ForwardingOrder", "ForwardingOrder")
                         .WithMany()
-                        .HasForeignKey("ForwardingOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ForwardingOrderId");
 
                     b.HasOne("TransThings.Api.DataAccess.Models.OrderStatus", "OrderStatus")
                         .WithMany()
@@ -857,9 +853,7 @@ namespace TransThings.Api.Migrations
 
                     b.HasOne("TransThings.Api.DataAccess.Models.VehicleType", "VehicleType")
                         .WithMany()
-                        .HasForeignKey("VehicleTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("VehicleTypeId");
 
                     b.HasOne("TransThings.Api.DataAccess.Models.Warehouse", "Warehouse")
                         .WithMany()

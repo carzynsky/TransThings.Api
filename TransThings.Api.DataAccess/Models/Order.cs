@@ -17,19 +17,16 @@ namespace TransThings.Api.DataAccess.Models
         [Required]
         public string OrderNumber { get; set; }
         public DateTime OrderCreationDate { get; set; }
-        public DateTime OrderExpectedDate { get; set; }
-
-        [AllowNull]
-        public DateTime OrderRealizationDate { get; set; }
-
-        public decimal NetPrice { get; set; }
-        public decimal GrossPrice { get; set; }
-        public decimal TotalNetWeight { get; set; }
-        public decimal TotalGrossWeight { get; set; }
-        public decimal TotalVolume { get; set; }
-        public decimal TransportDistance { get; set; }
-        public bool IsClientVerified { get; set; }
-        public bool IsAvailableAtWarehouse { get; set; }
+        public DateTime? OrderExpectedDate { get; set; }
+        public DateTime? OrderRealizationDate { get; set; }
+        public decimal? NetPrice { get; set; }
+        public decimal? GrossPrice { get; set; }
+        public decimal? TotalNetWeight { get; set; }
+        public decimal? TotalGrossWeight { get; set; }
+        public decimal? TotalVolume { get; set; }
+        public decimal? TransportDistance { get; set; }
+        public bool? IsClientVerified { get; set; }
+        public bool? IsAvailableAtWarehouse { get; set; }
 
         [StringLength(255)]
         public string DestinationStreetAddress { get; set; }
@@ -47,13 +44,13 @@ namespace TransThings.Api.DataAccess.Models
         public string CustomerAddtionalInstructions { get; set; }
 
         public int ClientId { get; set; }
-        public int VehicleTypeId { get; set; }
+        public int? VehicleTypeId { get; set; }
         public int OrdererId { get; set; }
         public int OrderStatusId { get; set; }
         public int PaymentFormId { get; set; }
         public int WarehouseId { get; set; }
-        public int ConsultantId { get; set; }
-        public int ForwardingOrderId { get; set; }
+        public int? ConsultantId { get; set; }
+        public int? ForwardingOrderId { get; set; }
 
         [ForeignKey("ClientId")]
         public virtual Client Client { get; set; }

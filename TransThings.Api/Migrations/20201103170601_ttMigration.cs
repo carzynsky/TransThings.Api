@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TransThings.Api.Migrations
 {
-    public partial class transThingMigration : Migration
+    public partial class ttMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -170,7 +170,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.PaymentFormId,
                         principalTable: "PaymentForms",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,7 +196,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.TransporterId,
                         principalTable: "Transporters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -225,7 +225,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.UserRoleId,
                         principalTable: "UserRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -250,13 +250,13 @@ namespace TransThings.Api.Migrations
                         column: x => x.TransporterId,
                         principalTable: "Transporters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Vehicles_VehicleTypes_VehicleTypeId",
                         column: x => x.VehicleTypeId,
                         principalTable: "VehicleTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -278,7 +278,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.ForwarderId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -299,7 +299,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -327,7 +327,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.ForwardingOrderId,
                         principalTable: "ForwardingOrders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -338,29 +338,29 @@ namespace TransThings.Api.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderNumber = table.Column<string>(maxLength: 255, nullable: false),
                     OrderCreationDate = table.Column<DateTime>(nullable: false),
-                    OrderExpectedDate = table.Column<DateTime>(nullable: false),
-                    OrderRealizationDate = table.Column<DateTime>(nullable: false),
-                    NetPrice = table.Column<decimal>(nullable: false),
-                    GrossPrice = table.Column<decimal>(nullable: false),
-                    TotalNetWeight = table.Column<decimal>(nullable: false),
-                    TotalGrossWeight = table.Column<decimal>(nullable: false),
-                    TotalVolume = table.Column<decimal>(nullable: false),
-                    TransportDistance = table.Column<decimal>(nullable: false),
-                    IsClientVerified = table.Column<bool>(nullable: false),
-                    IsAvailableAtWarehouse = table.Column<bool>(nullable: false),
+                    OrderExpectedDate = table.Column<DateTime>(nullable: true),
+                    OrderRealizationDate = table.Column<DateTime>(nullable: true),
+                    NetPrice = table.Column<decimal>(nullable: true),
+                    GrossPrice = table.Column<decimal>(nullable: true),
+                    TotalNetWeight = table.Column<decimal>(nullable: true),
+                    TotalGrossWeight = table.Column<decimal>(nullable: true),
+                    TotalVolume = table.Column<decimal>(nullable: true),
+                    TransportDistance = table.Column<decimal>(nullable: true),
+                    IsClientVerified = table.Column<bool>(nullable: true),
+                    IsAvailableAtWarehouse = table.Column<bool>(nullable: true),
                     DestinationStreetAddress = table.Column<string>(maxLength: 255, nullable: true),
                     DestinationCity = table.Column<string>(maxLength: 255, nullable: true),
                     DestinationZipCode = table.Column<string>(maxLength: 30, nullable: true),
                     DestinationCountry = table.Column<string>(maxLength: 255, nullable: true),
                     CustomerAddtionalInstructions = table.Column<string>(maxLength: 512, nullable: true),
                     ClientId = table.Column<int>(nullable: false),
-                    VehicleTypeId = table.Column<int>(nullable: false),
+                    VehicleTypeId = table.Column<int>(nullable: true),
                     OrdererId = table.Column<int>(nullable: false),
                     OrderStatusId = table.Column<int>(nullable: false),
                     PaymentFormId = table.Column<int>(nullable: false),
                     WarehouseId = table.Column<int>(nullable: false),
-                    ConsultantId = table.Column<int>(nullable: false),
-                    ForwardingOrderId = table.Column<int>(nullable: false)
+                    ConsultantId = table.Column<int>(nullable: true),
+                    ForwardingOrderId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -370,7 +370,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.ClientId,
                         principalTable: "Clients",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_Users_ConsultantId",
                         column: x => x.ConsultantId,
@@ -388,19 +388,19 @@ namespace TransThings.Api.Migrations
                         column: x => x.OrderStatusId,
                         principalTable: "OrderStatuses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_Users_OrdererId",
                         column: x => x.OrdererId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_PaymentForms_PaymentFormId",
                         column: x => x.PaymentFormId,
                         principalTable: "PaymentForms",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_VehicleTypes_VehicleTypeId",
                         column: x => x.VehicleTypeId,
@@ -412,7 +412,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.WarehouseId,
                         principalTable: "Warehouses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -432,13 +432,13 @@ namespace TransThings.Api.Migrations
                         column: x => x.ForwardingOrderId,
                         principalTable: "ForwardingOrders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Transits_ForwardingOrders_Transits_TransitId",
                         column: x => x.TransitId,
                         principalTable: "Transits",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -464,7 +464,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
