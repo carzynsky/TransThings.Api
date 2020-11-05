@@ -30,7 +30,6 @@ namespace TransThings.Api.DataAccess.Models
 
         public int OrderId { get; set; }
 
-        [Required]
         [ForeignKey("OrderId")]
         public virtual Order Order { get; set; }
     }

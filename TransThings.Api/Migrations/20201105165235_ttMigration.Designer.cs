@@ -10,7 +10,7 @@ using TransThings.Api.DataAccess;
 namespace TransThings.Api.Migrations
 {
     [DbContext(typeof(TransThingsDbContext))]
-    [Migration("20201103170601_ttMigration")]
+    [Migration("20201105165235_ttMigration")]
     partial class ttMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -362,14 +362,13 @@ namespace TransThings.Api.Migrations
                     b.Property<decimal?>("NetPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("OrderCreationDate")
+                    b.Property<DateTime?>("OrderCreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("OrderExpectedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OrderNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 

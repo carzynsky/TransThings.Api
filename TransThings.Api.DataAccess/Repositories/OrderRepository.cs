@@ -94,9 +94,7 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<Order> GetLastOrderAsync()
         {
-            var lastOrder = await context.Orders.OrderByDescending(x => x.Id).Include(x => x.Client).Include(x => x.Consultant)
-                .Include(x => x.ForwardingOrder).Include(x => x.Orderer).Include(x => x.OrderStatus)
-                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).SingleOrDefaultAsync();
+            var lastOrder = await context.Orders.OrderByDescending(x => x.Id).FirstOrDefaultAsync();
             return lastOrder;
         }
     }

@@ -146,12 +146,12 @@ namespace TransThings.Api.BusinessLogic.Services
         private async Task<string> GenerateForwardingOrderNumber()
         {
             string prefix = "ZS";
-            string todayDate = string.Format("ddMMYYYY", DateTime.Now);
-            string timeNow = string.Format("HHmmss", DateTime.Now);
+            string todayDate = DateTime.Now.ToString("ddMMyyyy");
+            string timeNow = DateTime.Now.ToString("HHmmss");
 
             int lastForwardingOrderId;
             var lastForwardingOrder = await unitOfWork.ForwardingOrderRepository.GetLastForwardingOrderAsync();
-            lastForwardingOrderId = lastForwardingOrder is null ? 1 : lastForwardingOrder.Id++;
+            lastForwardingOrderId = lastForwardingOrder is null ? 1 : lastForwardingOrder.Id + 1;
 
             return string.Concat(prefix, "-", todayDate, "-", timeNow, "-", lastForwardingOrderId);
         }

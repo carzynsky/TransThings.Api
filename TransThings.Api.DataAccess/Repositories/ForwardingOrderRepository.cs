@@ -55,7 +55,7 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<ForwardingOrder> GetLastForwardingOrderAsync()
         {
-            var lastForwardingOrder = await context.ForwardingOrders.OrderByDescending(x => x.Id).SingleOrDefaultAsync();
+            var lastForwardingOrder = await context.ForwardingOrders.OrderByDescending(x => x.Id).FirstOrDefaultAsync();
             return lastForwardingOrder;
         }
     }

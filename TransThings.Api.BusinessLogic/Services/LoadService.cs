@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
 using TransThings.Api.BusinessLogic.Helpers;
+using TransThings.Api.DataAccess.Dto;
 using TransThings.Api.DataAccess.Models;
 using TransThings.Api.DataAccess.RepositoryPattern;
 
@@ -34,17 +35,18 @@ namespace TransThings.Api.BusinessLogic.Services
             return load;
         }
 
-        public async Task<GenericResponse> AddLoad(Load load)
+        public async Task<GenericResponse> AddLoad(LoadDto loads)
         {
-            if (load == null)
+            if (loads == null)
                 return new GenericResponse(false, "Load data has not been provided.");
 
-            if (string.IsNullOrEmpty(load.Name))
-                return new GenericResponse(false, "Load name has not been provided.");
+            /*foreach(var load in loads.Loads)
+                if (string.IsNullOrEmpty(load.))
+                    return new GenericResponse(false, "Load name has not been provided.");*/
 
             try
             {
-                await unitOfWork.LoadRepository.AddLoadAsync(load);
+                await unitOfWork.LoadRepository.AddLoadAsync(loads.Loads);
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -54,7 +56,7 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "Load has been created.");
+            return new GenericResponse(true, "Towary zostały dodane.");
         }
 
         public async Task<GenericResponse> RemoveLoad(int id)

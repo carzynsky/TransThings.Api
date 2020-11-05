@@ -14,9 +14,8 @@ namespace TransThings.Api.DataAccess.Models
         public int Id { get; set; }
 
         [StringLength(255)]
-        [Required]
-        public string OrderNumber { get; set; }
-        public DateTime OrderCreationDate { get; set; }
+        public string? OrderNumber { get; set; }
+        public DateTime? OrderCreationDate { get; set; }
         public DateTime? OrderExpectedDate { get; set; }
         public DateTime? OrderRealizationDate { get; set; }
         public decimal? NetPrice { get; set; }

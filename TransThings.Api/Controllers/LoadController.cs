@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
+using TransThings.Api.DataAccess.Dto;
 using TransThings.Api.DataAccess.Models;
 
 namespace TransThings.Api.Controllers
@@ -49,9 +50,9 @@ namespace TransThings.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddLoad([FromBody] Load load)
+        public async Task<ActionResult> AddLoad([FromBody] LoadDto loads)
         {
-            var addLoadResult = await loadService.AddLoad(load);
+            var addLoadResult = await loadService.AddLoad(loads);
             if (!addLoadResult.IsSuccessful)
                 return BadRequest(addLoadResult);
 

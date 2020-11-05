@@ -59,15 +59,21 @@ namespace TransThings.Api.BusinessLogic.Services
             return order;
         }
 
-        public async Task<GenericResponse> AddOrder(Order order)
+        public async Task<OrderResponse> AddOrder(Order order)
         {
             if (order == null)
-                return new GenericResponse(false, "No order has been provided.");
+                return new OrderResponse(false, "No order has been provided.", null);
 
             if (order.OrderNumber != null)
-                return new GenericResponse(false, "Order number can't be provided manaully.");
+                return new OrderResponse(false, "Order number can't be provided manaully.", null);
 
             order.OrderNumber = await CreateOrderNumber();
+
+            var orderStatusName = await unitOfWork.OrderStatusRepository.GetOrderStatusByNameAsync("Utworzone");
+            if (orderStatusName == null)
+                return new OrderResponse(false, "Brak poprawnego statusu zamówienia.", null);
+
+            order.OrderStatusId = orderStatusName.Id;
 
             try
             {
@@ -75,13 +81,15 @@ namespace TransThings.Api.BusinessLogic.Services
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                return new GenericResponse(false, ex.InnerException.Message);
+                return new OrderResponse(false, ex.InnerException.Message, null);
             }
             catch (DbUpdateException ex)
             {
-                return new GenericResponse(false, ex.InnerException.Message);
+                return new OrderResponse(false, ex.InnerException.Message, null);
             }
-            return new GenericResponse(true, "Order has been added.");
+
+            int? orderId = order?.Id;
+            return new OrderResponse(true, $"Utworzono zamówienie {order.OrderNumber}", orderId);
         }
 
         public async Task<GenericResponse> RemoveOrder(int id)
@@ -162,12 +170,12 @@ namespace TransThings.Api.BusinessLogic.Services
         private async Task<string> CreateOrderNumber()
         {
             string prefix = "ZT";
-            string todayDate = string.Format("ddMMYYYY", DateTime.Now);
-            string timeNow = string.Format("HHmmss", DateTime.Now);
+            string todayDate = DateTime.Now.ToString("ddMMyyyy");
+            string timeNow = DateTime.Now.ToString("HHmmss");
 
             int lastOrderId;
             var lastOrder = await unitOfWork.OrderRepository.GetLastOrderAsync();
-            lastOrderId = lastOrder is null ? 1 : lastOrder.Id++;
+            lastOrderId = lastOrder is null ? 1 : lastOrder.Id + 1;
 
             return string.Concat(prefix, "-", todayDate, "-", timeNow, "-", lastOrderId);
         }

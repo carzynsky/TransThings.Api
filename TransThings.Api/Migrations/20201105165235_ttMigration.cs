@@ -336,8 +336,8 @@ namespace TransThings.Api.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderNumber = table.Column<string>(maxLength: 255, nullable: false),
-                    OrderCreationDate = table.Column<DateTime>(nullable: false),
+                    OrderNumber = table.Column<string>(maxLength: 255, nullable: true),
+                    OrderCreationDate = table.Column<DateTime>(nullable: true),
                     OrderExpectedDate = table.Column<DateTime>(nullable: true),
                     OrderRealizationDate = table.Column<DateTime>(nullable: true),
                     NetPrice = table.Column<decimal>(nullable: true),
