@@ -59,10 +59,10 @@ namespace TransThings.Api.Controllers
             return Ok(addLoadResult);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateLoad([FromBody] Load load, [FromRoute] int id)
+        [HttpPut]
+        public async Task<ActionResult> UpdateLoad([FromBody] LoadDto loads)
         {
-            var updateLoadResult = await loadService.UpdateLoad(load, id);
+            var updateLoadResult = await loadService.UpdateLoads(loads);
             if (!updateLoadResult.IsSuccessful)
                 return BadRequest(updateLoadResult);
 

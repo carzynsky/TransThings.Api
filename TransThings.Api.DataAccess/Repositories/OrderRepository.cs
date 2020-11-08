@@ -21,7 +21,7 @@ namespace TransThings.Api.DataAccess.Repositories
         {
             var orders = await context.Orders.Include(x => x.Client).Include(x => x.Consultant)
                 .Include(x => x.ForwardingOrder).Include(x => x.Orderer).Include(x => x.OrderStatus)
-                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).ToListAsync();
+                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).OrderByDescending(x => x.Id).ToListAsync();
             return orders;
         }
 

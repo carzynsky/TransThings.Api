@@ -80,30 +80,43 @@ namespace TransThings.Api.BusinessLogic.Services
             return new GenericResponse(true, "Load has been removed.");
         }
 
-        public async Task<GenericResponse> UpdateLoad(Load load, int id)
+        public async Task<GenericResponse> UpdateLoads(LoadDto loads)
         {
-            if (load == null)
-                return new GenericResponse(false, "No load has been provided.");
+            if (loads == null)
+                return new GenericResponse(false, "No loads have been provided.");
 
-            var loadToUpdate = await unitOfWork.LoadRepository.GetLoadByIdAsync(id);
+            /*var loadToUpdate = await unitOfWork.LoadRepository.GetLoadByIdAsync(id);
             if (loadToUpdate == null)
-                return new GenericResponse(false, $"Load with id={id} does not exist.");
+                return new GenericResponse(false, $"Load with id={id} does not exist.");*/
 
-            if (string.IsNullOrEmpty(load.Name))
-                return new GenericResponse(false, "Load name has not been provided.");
+            /*if (string.IsNullOrEmpty(load.Name))
+                return new GenericResponse(false, "Load name has not been provided.");*/
 
-            loadToUpdate.Amount = load.Amount;
-            loadToUpdate.GrossWeight = load.GrossWeight;
-            loadToUpdate.Name = load.Name;
-            loadToUpdate.NetWeight = load.NetWeight;
-            loadToUpdate.OrderId = load.OrderId;
-            loadToUpdate.PackageType = load.PackageType;
-            loadToUpdate.Volume = load.Volume;
-            loadToUpdate.Weight = load.Weight;
+            List<Load> loadsToAddOrUpdate = new List<Load>();
+
+            foreach(var load in loads.Loads)
+            {
+                var loadToUpdate = await unitOfWork.LoadRepository.GetLoadByIdAsync(load.Id);
+                if (loadToUpdate == null)
+                {
+                    loadsToAddOrUpdate.Add(load);
+                    continue;
+                }
+
+                loadToUpdate.Amount = load.Amount;
+                loadToUpdate.GrossWeight = load.GrossWeight;
+                loadToUpdate.Name = load.Name;
+                loadToUpdate.NetWeight = load.NetWeight;
+                loadToUpdate.OrderId = load.OrderId;
+                loadToUpdate.PackageType = load.PackageType;
+                loadToUpdate.Volume = load.Volume;
+                loadToUpdate.Weight = load.Weight;
+                loadsToAddOrUpdate.Add(loadToUpdate);
+            }
 
             try
             {
-                await unitOfWork.LoadRepository.UpdateLoad(loadToUpdate);
+                await unitOfWork.LoadRepository.UpdateLoads(loadsToAddOrUpdate);
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -113,7 +126,7 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "Load has been updated.");
+            return new GenericResponse(true, "Loads have been added or updated.");
         }
     }
 }

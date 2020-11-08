@@ -6,7 +6,7 @@ namespace TransThings.Api.BusinessLogic.Constants
 {
     public class AuthResponseMessage
     {
-        public const string UserWithThisLoginNotExists = "Użytkownik o podanym loginie już istnieje.";
+        public const string UserWithThisLoginNotExists = "Użytkownik o podanym loginie nie istnieje.";
         public const string WrongPassword = "Niepoprawne hasło.";
         public const string LoggedSucessfuly = "Zalogowano.";
         public const string LoginAndPasswordNotProvided = "Login i hasło nie zostało podane.";

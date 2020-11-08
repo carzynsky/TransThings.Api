@@ -41,9 +41,9 @@ namespace TransThings.Api.DataAccess.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateLoad(Load load)
+        public async Task UpdateLoads(List<Load> loads)
         {
-            context.Loads.Update(load);
+            context.Loads.UpdateRange(loads);
             await context.SaveChangesAsync();
         }
 
