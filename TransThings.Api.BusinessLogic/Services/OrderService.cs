@@ -122,12 +122,14 @@ namespace TransThings.Api.BusinessLogic.Services
             if (orderToUpdate == null)
                 return new GenericResponse(false, $"Order with id={id} does not exist.");
 
-            if (orderToUpdate.OrderNumber != order.OrderNumber)
-                return new GenericResponse(false, "Order number can't be modified.");
+            // Another logic that might not be handled
+            /*if (orderToUpdate.OrderNumber != order.OrderNumber)
+                return new GenericResponse(false, "Order number can't be modified.");*/
 
-            if (orderToUpdate.OrderCreationDate != order.OrderCreationDate)
-                return new GenericResponse(false, "Order create date can't be modified.");
+            /*if (orderToUpdate.OrderCreationDate != order.OrderCreationDate)
+                return new GenericResponse(false, "Order create date can't be modified.");*/
 
+            #region Update order data
             orderToUpdate.ClientId = order.ClientId;
             orderToUpdate.ConsultantId = order.ConsultantId;
             orderToUpdate.CustomerAddtionalInstructions = order.CustomerAddtionalInstructions;
@@ -151,6 +153,7 @@ namespace TransThings.Api.BusinessLogic.Services
             orderToUpdate.TransportDistance = order.TransportDistance;
             orderToUpdate.VehicleTypeId = order.VehicleTypeId;
             orderToUpdate.WarehouseId = order.WarehouseId;
+            #endregion
 
             try
             {
@@ -164,9 +167,13 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "Order has been removed.");
+            return new GenericResponse(true, "Zamówienie zostało zaktualizowane");
         }
 
+        /// <summary>
+        /// Metoda generująca numer zamówienia transportu
+        /// </summary>
+        /// <returns></returns>
         private async Task<string> CreateOrderNumber()
         {
             string prefix = "ZT";

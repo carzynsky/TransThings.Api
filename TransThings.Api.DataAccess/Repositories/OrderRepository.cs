@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TransThings.Api.DataAccess.Constants;
 using TransThings.Api.DataAccess.Models;
 
 namespace TransThings.Api.DataAccess.Repositories
@@ -20,8 +21,8 @@ namespace TransThings.Api.DataAccess.Repositories
         public async Task<List<Order>> GetAllOrdersAsync()
         {
             var orders = await context.Orders.Include(x => x.Client).Include(x => x.Consultant)
-                .Include(x => x.ForwardingOrder).Include(x => x.Orderer).Include(x => x.OrderStatus)
-                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).OrderByDescending(x => x.Id).ToListAsync();
+                .Include(x => x.ForwardingOrder).Include(x => x.OrderStatus)
+                .Include(x => x.Warehouse).OrderByDescending(x => x.Id).ToListAsync();
             return orders;
         }
 
@@ -50,11 +51,9 @@ namespace TransThings.Api.DataAccess.Repositories
         }
 
         public async Task<List<Order>> GetOrdersByConsultantAsync(int consultantId)
-
         {
-            var orders = await context.Orders.Where(x => x.ConsultantId.Equals(consultantId)).Include(x => x.Client).Include(x => x.Consultant)
-                .Include(x => x.ForwardingOrder).Include(x => x.Orderer).Include(x => x.OrderStatus)
-                .Include(x => x.PaymentForm).Include(x => x.VehicleType).Include(x => x.Warehouse).ToListAsync();
+            var orders = await context.Orders.Where(x => x.ConsultantId.Equals(consultantId) && x.OrderStatus.StatusName.Equals(Status.WaitingForConsultation))
+                .Include(x => x.OrderStatus).Include(x => x.Client).Include(x => x.Warehouse).OrderByDescending(x => x.Id).ToListAsync();
             return orders;
         }
 

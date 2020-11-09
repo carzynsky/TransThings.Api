@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
 using TransThings.Api.BusinessLogic.Helpers;
@@ -80,7 +81,7 @@ namespace TransThings.Api.BusinessLogic.Services
             return new GenericResponse(true, "Load has been removed.");
         }
 
-        public async Task<GenericResponse> UpdateLoads(LoadDto loads)
+        public async Task<GenericResponse> UpdateLoads(LoadDto loads, int orderId)
         {
             if (loads == null)
                 return new GenericResponse(false, "No loads have been provided.");
@@ -92,7 +93,11 @@ namespace TransThings.Api.BusinessLogic.Services
             /*if (string.IsNullOrEmpty(load.Name))
                 return new GenericResponse(false, "Load name has not been provided.");*/
 
-            List<Load> loadsToAddOrUpdate = new List<Load>();
+            // get old loads
+            var oldLoads = await GetLoadsByOrder(orderId);
+
+            // create new list of loads to add or update
+            var loadsToAddOrUpdate = new List<Load>();
 
             foreach(var load in loads.Loads)
             {
@@ -107,11 +112,19 @@ namespace TransThings.Api.BusinessLogic.Services
                 loadToUpdate.GrossWeight = load.GrossWeight;
                 loadToUpdate.Name = load.Name;
                 loadToUpdate.NetWeight = load.NetWeight;
-                loadToUpdate.OrderId = load.OrderId;
                 loadToUpdate.PackageType = load.PackageType;
                 loadToUpdate.Volume = load.Volume;
                 loadToUpdate.Weight = load.Weight;
                 loadsToAddOrUpdate.Add(loadToUpdate);
+            }
+
+            // Catch removed loads on frontend and remove them from db
+            foreach(var oldLoad in oldLoads)
+            {
+                var _loadToDelete = loadsToAddOrUpdate.FirstOrDefault(x => x.Id.Equals(oldLoad.Id));
+
+                if (_loadToDelete == null)
+                    await unitOfWork.LoadRepository.RemoveLoad(oldLoad);
             }
 
             try
@@ -126,7 +139,7 @@ namespace TransThings.Api.BusinessLogic.Services
             {
                 return new GenericResponse(false, ex.InnerException.Message);
             }
-            return new GenericResponse(true, "Loads have been added or updated.");
+            return new GenericResponse(true, "Towary zostały dodane lub zaktualizowane.");
         }
     }
 }
