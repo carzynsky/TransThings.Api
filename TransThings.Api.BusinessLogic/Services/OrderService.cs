@@ -132,7 +132,7 @@ namespace TransThings.Api.BusinessLogic.Services
             #region Update order data
             orderToUpdate.ClientId = order.ClientId;
             orderToUpdate.ConsultantId = order.ConsultantId;
-            orderToUpdate.CustomerAddtionalInstructions = order.CustomerAddtionalInstructions;
+            orderToUpdate.CustomerAdditionalInstructions = order.CustomerAdditionalInstructions;
             orderToUpdate.DestinationCity = order.DestinationCity;
             orderToUpdate.DestinationCountry = order.DestinationCountry;
             orderToUpdate.DestinationStreetAddress = order.DestinationStreetAddress;

@@ -11,7 +11,7 @@ namespace TransThings.Api.BusinessLogic.Abstract
         Task<List<ForwardingOrder>> GetForwardingOrdersByForwarder(int forwarderId);
         Task<List<ForwardingOrder>> GetForwardingOrdersByTransit(int transitId);
         Task<ForwardingOrder> GetForwardingOrderById(int id);
-        Task<GenericResponse> AddForwardingOrder(ForwardingOrder forwardingOrder);
+        Task<ForwardingOrderResponse> AddForwardingOrder(ForwardingOrder forwardingOrder);
         Task<GenericResponse> UpdateForwardingOrder(ForwardingOrder forwardingOrder, int id);
         Task<GenericResponse> RemoveForwardingOrder(int id);
     }

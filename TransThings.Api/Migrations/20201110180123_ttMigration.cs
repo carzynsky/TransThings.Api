@@ -265,10 +265,10 @@ namespace TransThings.Api.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ForwardingOrderNumber = table.Column<string>(maxLength: 255, nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
+                    ForwardingOrderNumber = table.Column<string>(maxLength: 255, nullable: true),
+                    CreateDate = table.Column<DateTime>(nullable: true),
                     AdditionalDescription = table.Column<string>(maxLength: 512, nullable: true),
-                    ForwarderId = table.Column<int>(nullable: false)
+                    ForwarderId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -278,7 +278,7 @@ namespace TransThings.Api.Migrations
                         column: x => x.ForwarderId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -352,7 +352,7 @@ namespace TransThings.Api.Migrations
                     DestinationCity = table.Column<string>(maxLength: 255, nullable: true),
                     DestinationZipCode = table.Column<string>(maxLength: 30, nullable: true),
                     DestinationCountry = table.Column<string>(maxLength: 255, nullable: true),
-                    CustomerAddtionalInstructions = table.Column<string>(maxLength: 512, nullable: true),
+                    CustomerAdditionalInstructions = table.Column<string>(maxLength: 512, nullable: true),
                     ClientId = table.Column<int>(nullable: false),
                     VehicleTypeId = table.Column<int>(nullable: true),
                     OrdererId = table.Column<int>(nullable: false),

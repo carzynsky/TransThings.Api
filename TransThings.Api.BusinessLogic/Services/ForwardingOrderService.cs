@@ -60,16 +60,16 @@ namespace TransThings.Api.BusinessLogic.Services
             return forwardingOrder;
         }
 
-        public async Task<GenericResponse> AddForwardingOrder(ForwardingOrder forwardingOrder)
+        public async Task<ForwardingOrderResponse> AddForwardingOrder(ForwardingOrder forwardingOrder)
         {
             if (forwardingOrder == null)
-                return new GenericResponse(false, "No forwarding order has been provided.");
+                return new ForwardingOrderResponse(false, "No forwarding order has been provided.", null);
 
             if (forwardingOrder.ForwardingOrderNumber != null)
-                return new GenericResponse(false, "Forwarding order number can't be provided manually.");
+                return new ForwardingOrderResponse(false, "Forwarding order number can't be provided manually.", null);
 
             if (forwardingOrder.CreateDate != null)
-                return new GenericResponse(false, "Create date can't be provided manually.");
+                return new ForwardingOrderResponse(false, "Create date can't be provided manually.", null);
 
             forwardingOrder.ForwardingOrderNumber = await GenerateForwardingOrderNumber();
             forwardingOrder.CreateDate = DateTime.Now;
@@ -80,13 +80,15 @@ namespace TransThings.Api.BusinessLogic.Services
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                return new GenericResponse(false, ex.InnerException.Message);
+                return new ForwardingOrderResponse(false, ex.InnerException.Message, null);
             }
             catch (DbUpdateException ex)
             {
-                return new GenericResponse(false, ex.InnerException.Message);
+                return new ForwardingOrderResponse(false, ex.InnerException.Message, null);
             }
-            return new GenericResponse(true, "New forwarding order has been created.");
+
+            int? forwardingOrderId = forwardingOrder?.Id;
+            return new ForwardingOrderResponse(true, $"Utworzono zlecenie spedycji {forwardingOrder.ForwardingOrderNumber}", forwardingOrderId);
         }
 
         public async Task<GenericResponse> RemoveForwardingOrder(int id)

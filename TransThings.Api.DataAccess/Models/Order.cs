@@ -14,7 +14,7 @@ namespace TransThings.Api.DataAccess.Models
         public int Id { get; set; }
 
         [StringLength(255)]
-        public string? OrderNumber { get; set; }
+        public string OrderNumber { get; set; }
         public DateTime? OrderCreationDate { get; set; }
         public DateTime? OrderExpectedDate { get; set; }
         public DateTime? OrderRealizationDate { get; set; }
@@ -40,7 +40,7 @@ namespace TransThings.Api.DataAccess.Models
         public string DestinationCountry { get; set; }
 
         [StringLength(512)]
-        public string CustomerAddtionalInstructions { get; set; }
+        public string CustomerAdditionalInstructions { get; set; }
 
         public int ClientId { get; set; }
         public int? VehicleTypeId { get; set; }

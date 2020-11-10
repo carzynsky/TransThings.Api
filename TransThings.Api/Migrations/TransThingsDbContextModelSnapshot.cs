@@ -230,14 +230,13 @@ namespace TransThings.Api.Migrations
                         .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
 
-                    b.Property<DateTime>("CreateDate")
+                    b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ForwarderId")
+                    b.Property<int?>("ForwarderId")
                         .HasColumnType("int");
 
                     b.Property<string>("ForwardingOrderNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
@@ -325,7 +324,7 @@ namespace TransThings.Api.Migrations
                     b.Property<int?>("ConsultantId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CustomerAddtionalInstructions")
+                    b.Property<string>("CustomerAdditionalInstructions")
                         .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
 
@@ -793,9 +792,7 @@ namespace TransThings.Api.Migrations
                 {
                     b.HasOne("TransThings.Api.DataAccess.Models.User", "Forwarder")
                         .WithMany()
-                        .HasForeignKey("ForwarderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ForwarderId");
                 });
 
             modelBuilder.Entity("TransThings.Api.DataAccess.Models.Load", b =>

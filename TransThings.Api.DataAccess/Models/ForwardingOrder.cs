@@ -12,17 +12,14 @@ namespace TransThings.Api.DataAccess.Models
         public int Id { get; set; }
 
         [StringLength(255)]
-        [Required]
         public string ForwardingOrderNumber { get; set; }
 
-        [Required]
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
 
         [StringLength(512)]
-        [AllowNull]
         public string AdditionalDescription { get; set; }
 
-        public int ForwarderId { get; set; }
+        public int? ForwarderId { get; set; }
 
         [ForeignKey("ForwarderId")]
         public virtual User Forwarder { get; set; }

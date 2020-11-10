@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
 using TransThings.Api.DataAccess.Models;
-using TransThings.Api.DataAccess.RepositoryPattern;
 
 namespace TransThings.Api.Controllers
 {
@@ -43,7 +42,7 @@ namespace TransThings.Api.Controllers
         public async Task<ActionResult<List<ForwardingOrder>>> GetForwardingOrdersByForwarder([FromRoute] int id)
         {
             var forwardingOrders = await forwardingOrderService.GetForwardingOrdersByForwarder(id);
-            if (forwardingOrders == null)
+            if (forwardingOrders.Count == 0)
                 return NoContent();
 
             return Ok(forwardingOrders);
@@ -53,7 +52,7 @@ namespace TransThings.Api.Controllers
         public async Task<ActionResult<List<ForwardingOrder>>> GetForwardingOrdersByTransit([FromRoute] int id)
         {
             var forwardingOrders = await forwardingOrderService.GetForwardingOrdersByTransit(id);
-            if (forwardingOrders == null)
+            if (forwardingOrders.Count == 0)
                 return NoContent();
 
             return Ok(forwardingOrders);
