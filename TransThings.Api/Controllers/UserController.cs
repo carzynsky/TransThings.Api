@@ -65,7 +65,6 @@ namespace TransThings.Api.Controllers
             return Ok(addUserResult);
         }
 
-        [Authorize(Roles = Role.Admin)]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUser([FromBody] UserDto userDto, [FromRoute] int id)
         {

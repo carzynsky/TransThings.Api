@@ -80,9 +80,9 @@ namespace TransThings.Api.Controllers
             return Ok(order);
         }
 
-        [HttpGet("status/{id}")]
+        [HttpGet("forwarding-orders/{id}")]
         public async Task<ActionResult<List<Order>>> GetOrdersByForwardingOrder([FromRoute] int id)
-        {
+         {
             var order = await orderService.GetOrdersByForwardingOrder(id);
             if (order.Count == 0)
                 return NoContent();

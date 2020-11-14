@@ -34,15 +34,15 @@ namespace TransThings.Api.DataAccess.Repositories
             return _event;
         }
 
-        public async Task AddEventAsync(Event _event)
+        public async Task AddEventsAsync(List<Event> events)
         {
-            await context.Events.AddAsync(_event);
+            await context.Events.AddRangeAsync(events);
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateEvent(Event _event)
+        public async Task UpdateEvents(List<Event> events)
         {
-            context.Events.Update(_event);
+            context.Events.UpdateRange(events);
             await context.SaveChangesAsync();
         }
 

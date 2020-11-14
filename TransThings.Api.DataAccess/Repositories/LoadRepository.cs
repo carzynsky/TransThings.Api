@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TransThings.Api.DataAccess.Models;
 
@@ -19,13 +17,13 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<List<Load>> GetAllLoadsAsync()
         {
-            var loads = await context.Loads.Include(x => x.Order).ToListAsync();
+            var loads = await context.Loads.ToListAsync();
             return loads;
         }
 
         public async Task<List<Load>> GetLoadsByOrderAsync(int orderId)
         {
-            var loads = await context.Loads.Where(x => x.OrderId.Equals(orderId)).Include(x => x.Order).ToListAsync();
+            var loads = await context.Loads.Where(x => x.OrderId.Equals(orderId)).ToListAsync();
             return loads;
         }
 

@@ -42,11 +42,21 @@ namespace TransThings.Api.Controllers
         [HttpGet("orders/{id}")]
         public async Task<ActionResult<List<Load>>> GetLoadsByOrder([FromRoute] int id)
         {
-            var load = await loadService.GetLoadsByOrder(id);
-            if (load.Count == 0)
+            var loads = await loadService.GetLoadsByOrder(id);
+            if (loads.Count == 0)
                 return NoContent();
 
-            return Ok(load);
+            return Ok(loads);
+        }
+
+        [HttpPost("orders")]
+        public async Task<ActionResult<List<Load>>> GetLoadsByManyOrders([FromBody] OrderIdsDto orders)
+        {
+            var loads = await loadService.GetLoadsByManyOrders(orders);
+            if (loads.Count == 0)
+                return NoContent();
+
+            return Ok(loads);
         }
 
         [HttpPost]

@@ -32,8 +32,7 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<List<TransitForwardingOrder>> GetTransitForwardingOrdersByForwardingOrderAsync(int forwardingOrderId)
         {
-            var transitForwardingOrders = await context.TransitForwardingOrders.Where(x => x.ForwardingOrderId.Equals(forwardingOrderId)).
-                Include(x => x.ForwardingOrder).Include(x => x.Transit).ToListAsync();
+            var transitForwardingOrders = await context.TransitForwardingOrders.Where(x => x.ForwardingOrderId.Equals(forwardingOrderId)).ToListAsync();
             return transitForwardingOrders;
         }
 

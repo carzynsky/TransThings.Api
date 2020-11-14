@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
+using TransThings.Api.DataAccess.Dto;
 using TransThings.Api.DataAccess.Models;
 
 namespace TransThings.Api.Controllers
@@ -50,19 +51,19 @@ namespace TransThings.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddEvent([FromBody] Event _event)
+        public async Task<ActionResult> AddEvents([FromBody] EventDto events)
         {
-            var addEventResult = await eventService.AddEvent(_event);
+            var addEventResult = await eventService.AddEvents(events);
             if (!addEventResult.IsSuccessful)
                 return BadRequest(addEventResult);
 
             return Ok(addEventResult);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateEvent([FromBody] Event _event, [FromRoute] int id)
+        [HttpPut("{forwardingOrderId}")]
+        public async Task<ActionResult> UpdateEvents([FromBody] EventDto events, [FromRoute] int forwardingOrderId)
         {
-            var updateEventResult = await eventService.UpdateEvent(_event, id);
+            var updateEventResult = await eventService.UpdateEvents(events, forwardingOrderId);
             if (!updateEventResult.IsSuccessful)
                 return BadRequest(updateEventResult);
 

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace TransThings.Api.DataAccess.Models
 {
@@ -13,23 +11,19 @@ namespace TransThings.Api.DataAccess.Models
         public int Id { get; set; }
 
         [StringLength(80)]
-        [Required]
         public string EventName { get; set; }
 
-        public DateTime EventStartTime { get; set; }
+        public DateTime? EventStartTime { get; set; }
 
-        public DateTime EventEndTime { get; set; }
+        public DateTime? EventEndTime { get; set; }
 
         [StringLength(255)]
-        [Required]
         public string ContactPersonFirstName { get; set; }
 
         [StringLength(255)]
-        [Required]
         public string ContactPersonLastName { get; set; }
 
         [StringLength(40)]
-        [Required]
         public string ContactPersonPhoneNumber { get; set; }
 
         [StringLength(80)]
@@ -38,13 +32,9 @@ namespace TransThings.Api.DataAccess.Models
         [StringLength(100)]
         public string EventStreetAddress { get; set; }
 
-        [StringLength(512)]
-        public string OtherInformation { get; set; }
-
         public int ForwardingOrderId{ get; set; }
 
         [ForeignKey("ForwardingOrderId")]
         public virtual ForwardingOrder ForwardingOrder { get; set; }
-
     }
 }

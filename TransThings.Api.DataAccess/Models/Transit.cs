@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace TransThings.Api.DataAccess.Models
 {
@@ -18,6 +15,8 @@ namespace TransThings.Api.DataAccess.Models
         public decimal NetPrice { get; set; }
 
         public decimal GrossPrice { get; set; }
+
+        public decimal TransportDistance { get; set; }
 
         [StringLength(255)]
         public string TransitSourceStreetAddress { get; set; }
@@ -44,9 +43,19 @@ namespace TransThings.Api.DataAccess.Models
         public string TransitDestinationCountry { get; set; }
 
         public int PaymentFormId { get; set; }
+        public int TransporterId { get; set; }
+        public int VehicleId { get; set; }
 
         [ForeignKey("PaymentFormId")]
         [Required]
         public virtual PaymentForm PaymentForm { get; set; }
+
+        [ForeignKey("TransporterId")]
+        [Required]
+        public virtual Transporter Transporter { get; set; }
+
+        [ForeignKey("VehicleId")]
+        [Required]
+        public virtual Vehicle Vehicle { get; set; }
     }
 }

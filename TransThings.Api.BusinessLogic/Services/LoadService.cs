@@ -30,6 +30,19 @@ namespace TransThings.Api.BusinessLogic.Services
             return loads;
         }
 
+        public async Task<List<Load>> GetLoadsByManyOrders(OrderIdsDto orders)
+        {
+            var allLoads = new List<Load>();
+            foreach(var orderId in orders.OrderIds)
+            {
+                var loads = await unitOfWork.LoadRepository.GetLoadsByOrderAsync(orderId);
+                if (loads == null) continue;
+
+                allLoads.AddRange(loads);
+            }
+            return allLoads;
+        }
+
         public async Task<Load> GetLoadById(int id)
         {
             var load = await unitOfWork.LoadRepository.GetLoadByIdAsync(id);

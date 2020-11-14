@@ -10,6 +10,7 @@ namespace TransThings.Api.BusinessLogic.Abstract
     {
         Task<List<Load>> GetAllLoads();
         Task<List<Load>> GetLoadsByOrder(int orderId);
+        Task<List<Load>> GetLoadsByManyOrders(OrderIdsDto orders);
         Task<Load> GetLoadById(int id);
         Task<GenericResponse> AddLoad(LoadDto loads);
         Task<GenericResponse> UpdateLoads(LoadDto loads, int orderId);
