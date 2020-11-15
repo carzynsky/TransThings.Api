@@ -92,6 +92,7 @@ namespace TransThings.Api.BusinessLogic.Services
                     continue;
                 }
 
+                #region Event data update
                 eventToUpdate.ContactPersonFirstName = _event.ContactPersonFirstName;
                 eventToUpdate.ContactPersonLastName = _event.ContactPersonLastName;
                 eventToUpdate.ContactPersonPhoneNumber = _event.ContactPersonPhoneNumber;
@@ -101,10 +102,11 @@ namespace TransThings.Api.BusinessLogic.Services
                 eventToUpdate.EventStartTime = _event.EventStartTime;
                 eventToUpdate.EventStreetAddress = _event.EventStreetAddress;
                 eventsToAddOrUpdate.Add(eventToUpdate);
+                #endregion
             }
 
-            // Catch removed events
-            foreach(var oldEvent in oldEvents)
+            // catch removed events
+            foreach (var oldEvent in oldEvents)
             {
                 var eventToDelete = eventsToAddOrUpdate.FirstOrDefault(x => x.Id.Equals(oldEvent.Id));
                 if (eventToDelete == null)

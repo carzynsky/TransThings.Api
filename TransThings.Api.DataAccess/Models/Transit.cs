@@ -45,17 +45,18 @@ namespace TransThings.Api.DataAccess.Models
         public int PaymentFormId { get; set; }
         public int TransporterId { get; set; }
         public int VehicleId { get; set; }
+        public int DriverId { get; set; }
 
         [ForeignKey("PaymentFormId")]
-        [Required]
         public virtual PaymentForm PaymentForm { get; set; }
 
         [ForeignKey("TransporterId")]
-        [Required]
         public virtual Transporter Transporter { get; set; }
 
         [ForeignKey("VehicleId")]
-        [Required]
         public virtual Vehicle Vehicle { get; set; }
+
+        [ForeignKey("DriverId")]
+        public virtual Driver Driver { get; set; }
     }
 }

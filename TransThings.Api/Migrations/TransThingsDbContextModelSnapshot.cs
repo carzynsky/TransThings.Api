@@ -172,25 +172,21 @@ namespace TransThings.Api.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ContactPersonFirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
                     b.Property<string>("ContactPersonLastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
                     b.Property<string>("ContactPersonPhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(40)")
                         .HasMaxLength(40);
 
-                    b.Property<DateTime>("EventEndTime")
+                    b.Property<DateTime?>("EventEndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EventName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(80)")
                         .HasMaxLength(80);
 
@@ -198,7 +194,7 @@ namespace TransThings.Api.Migrations
                         .HasColumnType("nvarchar(80)")
                         .HasMaxLength(80);
 
-                    b.Property<DateTime>("EventStartTime")
+                    b.Property<DateTime?>("EventStartTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EventStreetAddress")
@@ -207,10 +203,6 @@ namespace TransThings.Api.Migrations
 
                     b.Property<int>("ForwardingOrderId")
                         .HasColumnType("int");
-
-                    b.Property<string>("OtherInformation")
-                        .HasColumnType("nvarchar(512)")
-                        .HasMaxLength(512);
 
                     b.HasKey("Id");
 
@@ -461,6 +453,9 @@ namespace TransThings.Api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("GrossPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -506,9 +501,24 @@ namespace TransThings.Api.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
+                    b.Property<decimal>("TransportDistance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TransporterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("DriverId");
+
                     b.HasIndex("PaymentFormId");
+
+                    b.HasIndex("TransporterId");
+
+                    b.HasIndex("VehicleId");
 
                     b.ToTable("Transits");
                 });
@@ -860,9 +870,27 @@ namespace TransThings.Api.Migrations
 
             modelBuilder.Entity("TransThings.Api.DataAccess.Models.Transit", b =>
                 {
+                    b.HasOne("TransThings.Api.DataAccess.Models.Driver", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TransThings.Api.DataAccess.Models.PaymentForm", "PaymentForm")
                         .WithMany()
                         .HasForeignKey("PaymentFormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TransThings.Api.DataAccess.Models.Transporter", "Transporter")
+                        .WithMany()
+                        .HasForeignKey("TransporterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TransThings.Api.DataAccess.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

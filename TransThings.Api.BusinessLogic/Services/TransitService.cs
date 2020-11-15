@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
 using TransThings.Api.BusinessLogic.Helpers;
+using TransThings.Api.DataAccess.Dto;
 using TransThings.Api.DataAccess.Models;
 using TransThings.Api.DataAccess.RepositoryPattern;
 
@@ -72,30 +74,124 @@ namespace TransThings.Api.BusinessLogic.Services
             return new GenericResponse(true, "Transit has been removed.");
         }
 
-        public async Task<GenericResponse> UpdateTransit(Transit transit, int id)
+        public async Task<GenericResponse> UpdateTransits(TransitDto transits, int forwardingOrderId)
         {
-            if (transit == null)
-                return new GenericResponse(false, "No transit has been provided.");
+            if (transits == null || transits.Transits == null)
+                return new GenericResponse(false, "Dane przejazdów nie zostały podane");
 
-            var transitToUpdate = await unitOfWork.TransitRepository.GetTransitByIdAsync(id);
-            if (transitToUpdate == null)
-                return new GenericResponse(false, $"Transit with id={id} does not exist.");
+            // get old transits from transitForwardingOrders table
+            var oldTransitForwardingOrders = await unitOfWork.TransitForwardingOrderRepository.GetTransitForwardingOrdersByForwardingOrderAsync(forwardingOrderId);
+            var oldTransits = new List<Transit>();
+            foreach(var oldTransitForwardingOrder in oldTransitForwardingOrders)
+            {
+                var oldTransit = await unitOfWork.TransitRepository.GetTransitByIdAsync(oldTransitForwardingOrder.TransitId);
+                if (oldTransit == null) continue;
 
-            transitToUpdate.GrossPrice = transit.GrossPrice;
-            transitToUpdate.NetPrice = transit.NetPrice;
-            transitToUpdate.PaymentFormId = transit.PaymentFormId;
-            transitToUpdate.RouteShortPath = transit.RouteShortPath;
-            transitToUpdate.TransitDestinationCity = transit.TransitDestinationCity;
-            transitToUpdate.TransitDestinationCountry = transit.TransitDestinationCountry;
-            transitToUpdate.TransitDestinationStreetAddress = transit.TransitDestinationStreetAddress;
-            transitToUpdate.TransitDestinationZipCode = transit.TransitDestinationZipCode;
-            transitToUpdate.TransitSourceCity = transit.TransitSourceCity;
-            transitToUpdate.TransitSourceCountry = transit.TransitSourceCountry;
-            transitToUpdate.TransitSourceStreetAddress = transit.TransitSourceStreetAddress;
-            transitToUpdate.TransitSourceZipCode = transit.TransitSourceZipCode;
+                oldTransits.Add(oldTransit);
+            }
+
+            // create new list of transits to add or update
+            var transitsToAddOrUpdate = new List<Transit>();
+
+            // create new list of transitForwardingOders to add or update
+            var transitForwardingOrdersToAddOrUpdate = new List<TransitForwardingOrder>();
+
+            foreach(var _transit in transits.Transits)
+            {
+                var transitToUpdate = await unitOfWork.TransitRepository.GetTransitByIdAsync(_transit.Id);
+                if (transitToUpdate == null)
+                {
+                    transitsToAddOrUpdate.Add(_transit);
+                    continue;
+                }
+
+                #region Transit data update
+                transitToUpdate.GrossPrice = _transit.GrossPrice;
+                transitToUpdate.NetPrice = _transit.NetPrice;
+                transitToUpdate.TransportDistance = _transit.TransportDistance;
+                transitToUpdate.PaymentFormId = _transit.PaymentFormId;
+                transitToUpdate.DriverId = _transit.DriverId;
+                transitToUpdate.TransporterId = _transit.TransporterId;
+                transitToUpdate.VehicleId = _transit.VehicleId;
+                transitToUpdate.RouteShortPath = _transit.RouteShortPath;
+                transitToUpdate.TransitDestinationCity = _transit.TransitDestinationCity;
+                transitToUpdate.TransitDestinationCountry = _transit.TransitDestinationCountry;
+                transitToUpdate.TransitDestinationStreetAddress = _transit.TransitDestinationStreetAddress;
+                transitToUpdate.TransitDestinationZipCode = _transit.TransitDestinationZipCode;
+                transitToUpdate.TransitSourceCity = _transit.TransitSourceCity;
+                transitToUpdate.TransitSourceCountry = _transit.TransitSourceCountry;
+                transitToUpdate.TransitSourceStreetAddress = _transit.TransitSourceStreetAddress;
+                transitToUpdate.TransitSourceZipCode = _transit.TransitSourceZipCode;
+                transitsToAddOrUpdate.Add(transitToUpdate);
+                #endregion
+            }
+
+            // catch removed transits from given forwarding order
+            foreach(var oldTransit in oldTransits)
+            {
+                var transitToDelete = transitsToAddOrUpdate.FirstOrDefault(x => x.Id.Equals(oldTransit.Id));
+                if(transitToDelete == null)
+                {
+                    // get all transit forwarding order by transit id to check, if there are other forwarding orders that use this transit
+                    var transitsForwardingOrderToDeleteByTransitId = await unitOfWork.TransitForwardingOrderRepository.GetTransitForwardingOrdersByTransitAsync(oldTransit.Id);
+                    if (transitsForwardingOrderToDeleteByTransitId == null || transitsForwardingOrderToDeleteByTransitId.Count() == 0) continue;
+
+                    try
+                    {
+                        var _transitForwardinOrderToDelete = transitsForwardingOrderToDeleteByTransitId.FirstOrDefault(x => x.ForwardingOrderId.Equals(forwardingOrderId));
+                        await unitOfWork.TransitForwardingOrderRepository.RemoveTransitForwardingOrder(_transitForwardinOrderToDelete);
+                    }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        return new GenericResponse(false, ex.InnerException.Message);
+                    }
+                    catch (DbUpdateException ex)
+                    {
+                        return new GenericResponse(false, ex.InnerException.Message);
+                    }
+
+                    // filter those which are not related to given forwarding order
+                    var transitsForwardingOrderToDelete = transitsForwardingOrderToDeleteByTransitId.Where(x => x.ForwardingOrderId != forwardingOrderId);
+                    if (transitsForwardingOrderToDelete.Count() == 0)
+                    {
+                        // delete also transit from transits table
+                        try
+                        {
+                            await unitOfWork.TransitRepository.RemoveTransit(oldTransit);
+                        }
+                        catch (DbUpdateConcurrencyException ex)
+                        {
+                            return new GenericResponse(false, ex.InnerException.Message);
+                        }
+                        catch (DbUpdateException ex)
+                        {
+                            return new GenericResponse(false, ex.InnerException.Message);
+                        }
+                        continue;
+                    }
+                }
+            }
+
             try
             {
-                await unitOfWork.TransitRepository.UpdateTransit(transitToUpdate);
+                await unitOfWork.TransitRepository.UpdateTransits(transitsToAddOrUpdate);
+                foreach(var _transit in transits.Transits)
+                {
+                    var transitForwardingOrderToUpdate = await unitOfWork.TransitForwardingOrderRepository.GetTransitForwardingOrderByTransitAndForwardingOrderAsync(_transit.Id, forwardingOrderId);
+
+                    if (transitForwardingOrderToUpdate == null)
+                    {
+                        var newTransitForwardingOrder = new TransitForwardingOrder()
+                        {
+                            TransitId = _transit.Id,
+                            ForwardingOrderId = forwardingOrderId
+                        };
+                        transitForwardingOrdersToAddOrUpdate.Add(newTransitForwardingOrder);
+                    }
+                }
+
+                await unitOfWork.TransitForwardingOrderRepository.UpdateTransitForwardingOrders(transitForwardingOrdersToAddOrUpdate);
+
             }
             catch (DbUpdateConcurrencyException ex)
             {

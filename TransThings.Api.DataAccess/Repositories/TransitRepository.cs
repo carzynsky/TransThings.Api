@@ -24,7 +24,8 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<Transit> GetTransitByIdAsync(int id)
         {
-            var transit = await context.Transits.Include(x => x.PaymentForm).SingleOrDefaultAsync(x => x.Id.Equals(id));
+            var transit = await context.Transits.Include(x => x.PaymentForm).Include(x => x.Transporter).Include(x => x.Driver)
+                .Include(x => x.Vehicle).SingleOrDefaultAsync(x => x.Id.Equals(id));
             return transit;
         }
 
@@ -34,9 +35,9 @@ namespace TransThings.Api.DataAccess.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateTransit(Transit transit)
+        public async Task UpdateTransits(List<Transit> transits)
         {
-            context.Transits.Update(transit);
+            context.Transits.UpdateRange(transits);
             await context.SaveChangesAsync();
         }
 

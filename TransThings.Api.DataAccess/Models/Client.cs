@@ -56,10 +56,5 @@ namespace TransThings.Api.DataAccess.Models
         [StringLength(40)]
         public string ContactPhoneNumber2 { get; set; }
 
-        [StringLength(40)]
-        public string BuildingNumber { get; set; }
-
-        [StringLength(40)]
-        public string ApartmentNumber { get; set; }
     }
 }

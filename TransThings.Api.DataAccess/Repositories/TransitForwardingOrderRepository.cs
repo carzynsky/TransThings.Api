@@ -38,8 +38,8 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<TransitForwardingOrder> GetTransitForwardingOrderByTransitAndForwardingOrderAsync(int transitId, int forwardingId)
         {
-            var transitForwardingOrder = await context.TransitForwardingOrders.Include(x => x.ForwardingOrder).Include(x => x.Transit)
-                .SingleOrDefaultAsync(x => x.TransitId.Equals(transitId) && x.ForwardingOrderId.Equals(forwardingId));
+            var transitForwardingOrder = await context.TransitForwardingOrders
+                .FirstOrDefaultAsync(x => x.TransitId.Equals(transitId) && x.ForwardingOrderId.Equals(forwardingId));
             return transitForwardingOrder;
         }
 
@@ -55,9 +55,9 @@ namespace TransThings.Api.DataAccess.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateTransitForwardingOrder(TransitForwardingOrder transitForwardingOrder)
+        public async Task UpdateTransitForwardingOrders(List<TransitForwardingOrder> transitForwardingOrders)
         {
-            context.TransitForwardingOrders.Update(transitForwardingOrder);
+            context.TransitForwardingOrders.UpdateRange(transitForwardingOrders);
             await context.SaveChangesAsync();
         }
 

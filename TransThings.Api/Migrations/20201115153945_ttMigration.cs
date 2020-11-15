@@ -144,36 +144,6 @@ namespace TransThings.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Transits",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RouteShortPath = table.Column<string>(maxLength: 100, nullable: true),
-                    NetPrice = table.Column<decimal>(nullable: false),
-                    GrossPrice = table.Column<decimal>(nullable: false),
-                    TransitSourceStreetAddress = table.Column<string>(maxLength: 255, nullable: true),
-                    TransitSourceZipCode = table.Column<string>(maxLength: 30, nullable: true),
-                    TransitSourceCity = table.Column<string>(maxLength: 255, nullable: true),
-                    TransitSourceCountry = table.Column<string>(maxLength: 255, nullable: true),
-                    TransitDestinationStreetAddress = table.Column<string>(maxLength: 255, nullable: true),
-                    TransitDestinationZipCode = table.Column<string>(maxLength: 255, nullable: true),
-                    TransitDestinationCity = table.Column<string>(maxLength: 255, nullable: true),
-                    TransitDestinationCountry = table.Column<string>(maxLength: 255, nullable: true),
-                    PaymentFormId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Transits", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Transits_PaymentForms_PaymentFormId",
-                        column: x => x.PaymentFormId,
-                        principalTable: "PaymentForms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Drivers",
                 columns: table => new
                 {
@@ -303,20 +273,71 @@ namespace TransThings.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Transits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RouteShortPath = table.Column<string>(maxLength: 100, nullable: true),
+                    NetPrice = table.Column<decimal>(nullable: false),
+                    GrossPrice = table.Column<decimal>(nullable: false),
+                    TransportDistance = table.Column<decimal>(nullable: false),
+                    TransitSourceStreetAddress = table.Column<string>(maxLength: 255, nullable: true),
+                    TransitSourceZipCode = table.Column<string>(maxLength: 30, nullable: true),
+                    TransitSourceCity = table.Column<string>(maxLength: 255, nullable: true),
+                    TransitSourceCountry = table.Column<string>(maxLength: 255, nullable: true),
+                    TransitDestinationStreetAddress = table.Column<string>(maxLength: 255, nullable: true),
+                    TransitDestinationZipCode = table.Column<string>(maxLength: 255, nullable: true),
+                    TransitDestinationCity = table.Column<string>(maxLength: 255, nullable: true),
+                    TransitDestinationCountry = table.Column<string>(maxLength: 255, nullable: true),
+                    PaymentFormId = table.Column<int>(nullable: false),
+                    TransporterId = table.Column<int>(nullable: false),
+                    VehicleId = table.Column<int>(nullable: false),
+                    DriverId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transits", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transits_Drivers_DriverId",
+                        column: x => x.DriverId,
+                        principalTable: "Drivers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Transits_PaymentForms_PaymentFormId",
+                        column: x => x.PaymentFormId,
+                        principalTable: "PaymentForms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Transits_Transporters_TransporterId",
+                        column: x => x.TransporterId,
+                        principalTable: "Transporters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Transits_Vehicles_VehicleId",
+                        column: x => x.VehicleId,
+                        principalTable: "Vehicles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Events",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EventName = table.Column<string>(maxLength: 80, nullable: false),
-                    EventStartTime = table.Column<DateTime>(nullable: false),
-                    EventEndTime = table.Column<DateTime>(nullable: false),
-                    ContactPersonFirstName = table.Column<string>(maxLength: 255, nullable: false),
-                    ContactPersonLastName = table.Column<string>(maxLength: 255, nullable: false),
-                    ContactPersonPhoneNumber = table.Column<string>(maxLength: 40, nullable: false),
+                    EventName = table.Column<string>(maxLength: 80, nullable: true),
+                    EventStartTime = table.Column<DateTime>(nullable: true),
+                    EventEndTime = table.Column<DateTime>(nullable: true),
+                    ContactPersonFirstName = table.Column<string>(maxLength: 255, nullable: true),
+                    ContactPersonLastName = table.Column<string>(maxLength: 255, nullable: true),
+                    ContactPersonPhoneNumber = table.Column<string>(maxLength: 40, nullable: true),
                     EventPlace = table.Column<string>(maxLength: 80, nullable: true),
                     EventStreetAddress = table.Column<string>(maxLength: 100, nullable: true),
-                    OtherInformation = table.Column<string>(maxLength: 512, nullable: true),
                     ForwardingOrderId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -533,9 +554,24 @@ namespace TransThings.Api.Migrations
                 column: "WarehouseId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Transits_DriverId",
+                table: "Transits",
+                column: "DriverId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Transits_PaymentFormId",
                 table: "Transits",
                 column: "PaymentFormId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transits_TransporterId",
+                table: "Transits",
+                column: "TransporterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transits_VehicleId",
+                table: "Transits",
+                column: "VehicleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transits_ForwardingOrders_ForwardingOrderId",
@@ -569,9 +605,6 @@ namespace TransThings.Api.Migrations
                 name: "Configurations");
 
             migrationBuilder.DropTable(
-                name: "Drivers");
-
-            migrationBuilder.DropTable(
                 name: "Events");
 
             migrationBuilder.DropTable(
@@ -584,16 +617,10 @@ namespace TransThings.Api.Migrations
                 name: "Transits_ForwardingOrders");
 
             migrationBuilder.DropTable(
-                name: "Vehicles");
-
-            migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Transits");
-
-            migrationBuilder.DropTable(
-                name: "Transporters");
 
             migrationBuilder.DropTable(
                 name: "Clients");
@@ -605,16 +632,25 @@ namespace TransThings.Api.Migrations
                 name: "OrderStatuses");
 
             migrationBuilder.DropTable(
-                name: "VehicleTypes");
+                name: "Warehouses");
 
             migrationBuilder.DropTable(
-                name: "Warehouses");
+                name: "Drivers");
 
             migrationBuilder.DropTable(
                 name: "PaymentForms");
 
             migrationBuilder.DropTable(
+                name: "Vehicles");
+
+            migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Transporters");
+
+            migrationBuilder.DropTable(
+                name: "VehicleTypes");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");

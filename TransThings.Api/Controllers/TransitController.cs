@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
+using TransThings.Api.DataAccess.Dto;
 using TransThings.Api.DataAccess.Models;
 
 namespace TransThings.Api.Controllers
@@ -60,10 +61,10 @@ namespace TransThings.Api.Controllers
             return Ok(addTransitResult);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateTransit([FromBody] Transit transit, [FromRoute] int id)
+        [HttpPut("{forwardingOrderId}")]
+        public async Task<ActionResult> UpdateTransits([FromBody] TransitDto transits, [FromRoute] int forwardingOrderId)
         {
-            var updateTransitResult = await transitService.UpdateTransit(transit, id);
+            var updateTransitResult = await transitService.UpdateTransits(transits, forwardingOrderId);
             if (!updateTransitResult.IsSuccessful)
                 return BadRequest(updateTransitResult);
 

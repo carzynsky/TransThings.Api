@@ -125,8 +125,6 @@ namespace TransThings.Api.BusinessLogic.Services
             clientToUpdate.ContactPhoneNumber2 = client.ContactPhoneNumber2;
             clientToUpdate.Gender = client.Gender;
             clientToUpdate.BirthDate = client.BirthDate;
-            clientToUpdate.ApartmentNumber = client.ApartmentNumber;
-            clientToUpdate.BuildingNumber = client.BuildingNumber;
             clientToUpdate.City = client.City;
             clientToUpdate.Country = client.Country;
             clientToUpdate.NIP = client.NIP;
