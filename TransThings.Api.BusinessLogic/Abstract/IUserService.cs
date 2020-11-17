@@ -9,6 +9,7 @@ namespace TransThings.Api.BusinessLogic.Abstract
     public interface IUserService
     {
         Task<List<UserDto>> GetAllUsers();
+        Task<UserStatsDto> GetUsersStats();
         Task<UserDto> GetUserById(int id);
         Task<List<UserDto>> GetAllUsersByRole(int userRoleId);
         Task<int> GetUserIdByLogin(string login);

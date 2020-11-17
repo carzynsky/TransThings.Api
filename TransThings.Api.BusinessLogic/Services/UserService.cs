@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
 using TransThings.Api.BusinessLogic.Constants;
 using TransThings.Api.BusinessLogic.Helpers;
+using TransThings.Api.DataAccess.Constants;
 using TransThings.Api.DataAccess.Dto;
 using TransThings.Api.DataAccess.Models;
 using TransThings.Api.DataAccess.RepositoryPattern;
@@ -74,6 +75,61 @@ namespace TransThings.Api.BusinessLogic.Services
                 });
             }
             return usersDto;
+        }
+
+        public async Task<UserStatsDto> GetUsersStats()
+        {
+            var users = await GetAllUsers();
+
+            int adminQuantity = 0,  forwardersQuantity = 0, orderersQuantity = 0;
+
+            if (users != null && users?.Count() != 0)
+            {
+                adminQuantity = users.Where(x => x.UserRoleId.Equals(Role.AdminId)).Count();
+                forwardersQuantity = users.Where(x => x.UserRoleId.Equals(Role.ForwarderId)).Count();
+                orderersQuantity = users.Where(x => x.UserRoleId.Equals(Role.OrdererId)).Count();
+            }
+
+            var lastLoginAttempt = await unitOfWork.LoginHistoryRepository.GetLastLoginHistoryAsync();
+            UserDto lastLoggedUser = lastLoginAttempt == null ? null : new UserDto()
+            {
+                Id = lastLoginAttempt.User.Id,
+                FirstName = lastLoginAttempt.User.FirstName,
+                LastName = lastLoginAttempt.User.LastName,
+                Gender = lastLoginAttempt.User.Gender,
+                BirthDate = lastLoginAttempt.User.BirthDate,
+                DateOfEmployment = lastLoginAttempt.User.DateOfEmployment,
+                Login = lastLoginAttempt.User.Login,
+                PeselNumber = lastLoginAttempt.User.PeselNumber,
+                Mail = lastLoginAttempt.User.Mail,
+                PhoneNumber = lastLoginAttempt.User.PhoneNumber,
+                UserRoleId = lastLoginAttempt.User.UserRoleId,
+                UserRole = lastLoginAttempt.User.UserRole.RoleName
+            };
+           
+
+            var todaysLoginAttempts = await unitOfWork.LoginHistoryRepository.GetTodaysLoginHistoryAsync();
+            int todaysLoginCount = 0;
+            double todaysSuccessfulRate = 0;
+
+            if (todaysLoginAttempts != null && todaysLoginAttempts.Count() != 0)
+            {
+                todaysLoginCount = todaysLoginAttempts.Count();
+                int todaySuccessfulLoginCount = todaysLoginAttempts.Where(x => x.IsSuccessful).Count();
+                todaysSuccessfulRate = todaySuccessfulLoginCount == 0 ? 0 : Math.Round((double)todaySuccessfulLoginCount / todaysLoginCount, 2)*100;
+            }
+
+            var usersStatsDto = new UserStatsDto
+            {
+                AdminsQuantity = adminQuantity,
+                ForwardersQuantity = forwardersQuantity,
+                OrderersQuantity = orderersQuantity,
+                LastLoggedUser = lastLoggedUser,
+                TodaysLoginAttempts = todaysLoginCount,
+                TodaysSuccessfulLoginRate = todaysSuccessfulRate
+            };
+
+            return usersStatsDto;
         }
 
         public async Task<UserDto> GetUserById(int id)

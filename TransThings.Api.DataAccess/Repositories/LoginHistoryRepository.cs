@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +20,19 @@ namespace TransThings.Api.DataAccess.Repositories
         {
             var loginHistories = await context.LoginHistories.Include(x => x.User).ToListAsync();
             return loginHistories;
+        }
+
+        public async Task<LoginHistory> GetLastLoginHistoryAsync()
+        {
+            var loginHistories = await context.LoginHistories.Include(x => x.User).ToListAsync();
+            var lastLoginHistory = loginHistories?.LastOrDefault(x => x.IsSuccessful);
+            return lastLoginHistory;
+        }
+
+        public async Task<List<LoginHistory>> GetTodaysLoginHistoryAsync()
+        {
+            var todaysLoginHistory = await context.LoginHistories.Where(x => x.AttemptDate.Date.Equals(DateTime.Today)).ToListAsync();
+            return todaysLoginHistory;
         }
 
         public async Task<List<LoginHistory>> GetLoginHistoryByUserAsync(int userId)

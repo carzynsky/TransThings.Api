@@ -7,7 +7,7 @@ namespace TransThings.Api.BusinessLogic.Constants
     public class UserResponseMessage
     {
         public const string UserDataNotProvided = "Nie podano danych użytkownika.";
-        public const string FirstNameOrLastNameOrLoginNotProvided = "Nie podano imienia, nazwiska lub loginuużytkownika.";
+        public const string FirstNameOrLastNameOrLoginNotProvided = "Nie podano imienia, nazwiska lub loginu użytkownika.";
         public const string UserWithGivenLoginAlreadyExists = "Użytkownik o podanym loginie już istnieje.";
         public const string IncorrectGender = "Podano niepoprawną płeć.";
         public const string NewUserCreated = "Utworzono nowego użytkownika.";

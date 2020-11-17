@@ -6,7 +6,6 @@ using TransThings.Api.BusinessLogic.Abstract;
 using TransThings.Api.BusinessLogic.Helpers;
 using TransThings.Api.DataAccess.Constants;
 using TransThings.Api.DataAccess.Dto;
-using TransThings.Api.DataAccess.Models;
 
 namespace TransThings.Api.Controllers
 {
@@ -33,6 +32,13 @@ namespace TransThings.Api.Controllers
             return Ok(users);
         }
 
+        [Authorize(Roles = Role.Admin)]
+        [HttpGet("stats")]
+        public async Task<ActionResult<UserStatsDto>> GetUsersStats()
+        {
+            var userStats = await userService.GetUsersStats();
+            return Ok(userStats);
+        }
 
         [HttpGet("role/{userRoleId}")]
         public async Task<ActionResult<List<UserDto>>> GetUsersByRole([FromRoute] int userRoleId)
