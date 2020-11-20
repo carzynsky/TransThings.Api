@@ -11,6 +11,7 @@ namespace TransThings.Api.DataAccess.Models
         public int Id { get; set; }
 
         [StringLength(80)]
+        [Required]
         public string EventName { get; set; }
 
         public DateTime? EventStartTime { get; set; }
@@ -27,9 +28,11 @@ namespace TransThings.Api.DataAccess.Models
         public string ContactPersonPhoneNumber { get; set; }
 
         [StringLength(80)]
+        [Required]
         public string EventPlace { get; set; }
 
         [StringLength(100)]
+        [Required]
         public string EventStreetAddress { get; set; }
 
         public int ForwardingOrderId{ get; set; }

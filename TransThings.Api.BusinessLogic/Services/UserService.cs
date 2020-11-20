@@ -196,7 +196,7 @@ namespace TransThings.Api.BusinessLogic.Services
             };
 
             var password = GenerateTemporaryPassword();
-            HashPassword hash = new HashPassword(password);
+            HashPassword hash = new HashPassword(password, userDto.Login);
             newUser.Password = hash.HashedPassword; // temporary password, no validation needed
             try
             {
@@ -228,11 +228,11 @@ namespace TransThings.Api.BusinessLogic.Services
             if (userToUpdatePassword == null)
                 return new GenericResponse(false, UserResponseMessage.UserWithGivenIdNotExists);
 
-            var oldPasswordHashed = new HashPassword(changePasswordData.OldPassword);
+            var oldPasswordHashed = new HashPassword(changePasswordData.OldPassword, userToUpdatePassword.Login);
             if (userToUpdatePassword.Password != oldPasswordHashed.HashedPassword)
                 return new GenericResponse(false, UserResponseMessage.IncorrectOldPassword);
 
-            HashPassword hash = new HashPassword(changePasswordData.NewPassword);
+            HashPassword hash = new HashPassword(changePasswordData.NewPassword, userToUpdatePassword.Login);
             if (userToUpdatePassword.Password == hash.HashedPassword)
                 return new GenericResponse(false, UserResponseMessage.NewPasswordHasToBeDifferent);
 
@@ -240,7 +240,7 @@ namespace TransThings.Api.BusinessLogic.Services
             if (!isPasswordSecure)
                 return new GenericResponse(false, UserResponseMessage.NotSafePassword);
 
-            hash = new HashPassword(changePasswordData.NewPassword);
+            hash = new HashPassword(changePasswordData.NewPassword, userToUpdatePassword.Login);
             userToUpdatePassword.Password = hash.HashedPassword;
             try
             {

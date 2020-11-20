@@ -47,7 +47,7 @@ namespace TransThings.Api.BusinessLogic.Services
             if (userWithAuthLogin == null)
                 return new AuthenticateResponse(AuthResponseMessage.UserWithThisLoginNotExists, null,null, null, null, null);
 
-            HashPassword hash = new HashPassword(authUser.Password);
+            HashPassword hash = new HashPassword(authUser.Password, authUser.Login);
             if (userWithAuthLogin.Password.Equals(hash.HashedPassword))
             {
                 var userRole = await unitOfWork.UserRoleRepository.GetUserRole(userWithAuthLogin);

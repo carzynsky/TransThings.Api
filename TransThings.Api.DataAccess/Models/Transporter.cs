@@ -10,6 +10,7 @@ namespace TransThings.Api.DataAccess.Models
         public int Id { get; set; }
 
         [StringLength(255)]
+        [Required]
         public string FullName { get; set; }
 
         [StringLength(255)]

@@ -14,9 +14,9 @@ namespace TransThings.Api.DataAccess.Models
         [Required]
         public string Name { get; set; }
 
-        public decimal Weight { get; set; }
+        public decimal? Weight { get; set; }
 
-        public int Amount { get; set; }
+        public int? Amount { get; set; }
 
         [StringLength(255)]
         public string PackageType { get; set; }

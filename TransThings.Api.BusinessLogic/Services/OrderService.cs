@@ -96,7 +96,7 @@ namespace TransThings.Api.BusinessLogic.Services
         {
             var orderToRemove = await unitOfWork.OrderRepository.GetOrderByIdAsync(id);
             if (orderToRemove == null)
-                return new GenericResponse(false, $"Order with id={id} does not exist.");
+                return new GenericResponse(false, $"Zamówienie o id={id} nie istnieje.");
 
             try
             {
@@ -116,11 +116,11 @@ namespace TransThings.Api.BusinessLogic.Services
         public async Task<GenericResponse> UpdateOrder(Order order, int id)
         {
             if (order == null)
-                return new GenericResponse(false, "No order has been provided");
+                return new GenericResponse(false, "Nie podano danych zamówienia");
 
             var orderToUpdate = await unitOfWork.OrderRepository.GetOrderByIdAsync(id);
             if (orderToUpdate == null)
-                return new GenericResponse(false, $"Order with id={id} does not exist.");
+                return new GenericResponse(false, $"Zamówienie o id={id} nie istnieje.");
 
             // Another logic that might not be handled
             /*if (orderToUpdate.OrderNumber != order.OrderNumber)
@@ -128,6 +128,11 @@ namespace TransThings.Api.BusinessLogic.Services
 
             /*if (orderToUpdate.OrderCreationDate != order.OrderCreationDate)
                 return new GenericResponse(false, "Order create date can't be modified.");*/
+
+            int? finishedOrderStatusId = null;
+            var orderStatuses = await unitOfWork.OrderStatusRepository.GetOrderStatusByNameAsync("Zakończone");
+            if (orderStatuses != null)
+                finishedOrderStatusId = orderStatuses.Id;
 
             #region Update order data
             orderToUpdate.ClientId = order.ClientId;
@@ -144,7 +149,6 @@ namespace TransThings.Api.BusinessLogic.Services
             orderToUpdate.NetPrice = order.NetPrice;
             orderToUpdate.OrdererId = order.OrdererId;
             orderToUpdate.OrderExpectedDate = order.OrderExpectedDate;
-            orderToUpdate.OrderRealizationDate = order.OrderRealizationDate;
             orderToUpdate.OrderStatusId = order.OrderStatusId;
             orderToUpdate.PaymentFormId = order.PaymentFormId;
             orderToUpdate.TotalGrossWeight = order.TotalGrossWeight;
@@ -153,6 +157,9 @@ namespace TransThings.Api.BusinessLogic.Services
             orderToUpdate.TransportDistance = order.TransportDistance;
             orderToUpdate.VehicleTypeId = order.VehicleTypeId;
             orderToUpdate.WarehouseId = order.WarehouseId;
+
+            if (order.OrderStatusId == finishedOrderStatusId)
+                orderToUpdate.OrderRealizationDate = DateTime.Now;
             #endregion
 
             try

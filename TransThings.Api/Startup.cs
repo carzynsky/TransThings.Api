@@ -36,7 +36,6 @@ namespace TransThings.Api
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IClientService, ClientService>();
-            services.AddTransient<IConfigurationService, ConfigurationService>();
             services.AddTransient<IDriverService, DriverService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IEventService, EventService>();

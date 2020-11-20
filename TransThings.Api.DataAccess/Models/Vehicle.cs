@@ -10,9 +10,11 @@ namespace TransThings.Api.DataAccess.Models
         public int Id { get; set; }
 
         [StringLength(40)]
+        [Required]
         public string Brand { get; set; }
 
         [StringLength(80)]
+        [Required]
         public string Model { get; set; }
 
         public decimal LoadingCapacity { get; set; }

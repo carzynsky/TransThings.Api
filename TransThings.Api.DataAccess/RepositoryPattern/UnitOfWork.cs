@@ -9,7 +9,6 @@ namespace TransThings.Api.DataAccess.RepositoryPattern
     {
         private readonly TransThingsDbContext context;
         private ClientRepository clientRepository;
-        private ConfigurationRepository configurationRepository;
         private DriverRepository driverRepository;
         private UserRepository userRepository;
         private EventRepository eventRepository;
@@ -41,12 +40,6 @@ namespace TransThings.Api.DataAccess.RepositoryPattern
         {
             get { return clientRepository ??= new ClientRepository(context); }
         }
-
-        public ConfigurationRepository ConfigurationRepository
-        {
-            get { return configurationRepository ??= new ConfigurationRepository(context); }
-        }
-
 
         public DriverRepository DriverRepository
         {

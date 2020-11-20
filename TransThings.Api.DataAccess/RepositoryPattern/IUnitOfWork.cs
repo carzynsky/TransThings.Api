@@ -6,7 +6,6 @@ namespace TransThings.Api.DataAccess.RepositoryPattern
     public interface IUnitOfWork
     {
         ClientRepository ClientRepository { get; }
-        ConfigurationRepository ConfigurationRepository { get; }
         DriverRepository DriverRepository { get; }
         UserRepository UserRepository { get; }
         EventRepository EventRepository { get; }

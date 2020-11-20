@@ -35,7 +35,7 @@ namespace TransThings.Api.Controllers
         [HttpPost("hash")]
         public IActionResult GetMessageTest(AuthUserData authUserData)
         {
-            HashPassword hashed = new HashPassword(authUserData.Password);
+            HashPassword hashed = new HashPassword(authUserData.Password, authUserData.Login);
             return Ok(hashed.HashedPassword);
         }
 
