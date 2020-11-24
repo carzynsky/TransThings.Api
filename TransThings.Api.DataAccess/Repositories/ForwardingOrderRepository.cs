@@ -19,13 +19,14 @@ namespace TransThings.Api.DataAccess.Repositories
 
         public async Task<List<ForwardingOrder>> GetAllForwardingOrdersAsync()
         {
-            var forwardingOrders = await context.ForwardingOrders.Include(x => x.Forwarder).ToListAsync();
+            var forwardingOrders = await context.ForwardingOrders.Include(x => x.Forwarder).OrderByDescending(x => x.Id).ToListAsync();
             return forwardingOrders;
         }
 
         public async Task<List<ForwardingOrder>> GetForwardingOrdersByForwarderAsync(int forwarderId)
         {
-            var forwardingOrders = await context.ForwardingOrders.Where(x => x.ForwarderId.Equals(forwarderId)).Include(x => x.Forwarder).ToListAsync();
+            var forwardingOrders = await context.ForwardingOrders.Where(x => x.ForwarderId.Equals(forwarderId))
+                .Include(x => x.Forwarder).OrderByDescending(x => x.Id).ToListAsync();
             return forwardingOrders;
         }
 

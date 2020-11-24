@@ -31,6 +31,17 @@ namespace TransThings.Api.Controllers
             return Ok(transits);
         }
 
+        [AllowAnonymous]
+        [HttpGet("stats")]
+        public async Task<ActionResult<List<Transit>>> GetTransitsStats()
+        {
+            var transitsStats = await transitService.GetTransitStats();
+            if (transitsStats == null)
+                return NoContent();
+
+            return Ok(transitsStats);
+        }
+
         [HttpGet("forwarding-orders/{id}")]
         public async Task<ActionResult<Transit>> GetTransitByForwardingOrder([FromRoute] int id)
         {

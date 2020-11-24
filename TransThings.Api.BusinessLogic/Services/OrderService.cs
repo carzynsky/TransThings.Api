@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
 using TransThings.Api.BusinessLogic.Helpers;
@@ -53,6 +54,61 @@ namespace TransThings.Api.BusinessLogic.Services
             return orders;
         }
 
+        public async Task<OrderStats> GetOrdersStats()
+        {
+            OrderStats orderStats = new OrderStats();
+            var orders = await unitOfWork.OrderRepository.GetOnlyOrders();
+            if (orders == null || orders.Count() == 0)
+                return orderStats;
+
+            int len = 6;
+            var ordersByLastMonths = new List<OrdersByMonth>(len);
+            var today = DateTime.Now;
+            var firstIndex = today.AddMonths(-6);
+
+            string[] monthsTranslate = new string[12] { "Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień",
+            "Wrzesień", "Pażdziernik", "Listopad", "Grudzień"};
+
+            for (int i = 5; i >= 0; i--)
+            {
+                var _month = today.AddMonths(-i);
+                var counter = orders.Where(x => x.OrderCreationDate?.Month == _month.Month
+                && x.OrderCreationDate?.Year == _month.Year).Count();
+
+                ordersByLastMonths.Add(new OrdersByMonth(monthsTranslate[_month.Month - 1] + " " + _month.Year, counter));
+            }
+            orderStats.OrdersByLastMonths = ordersByLastMonths;
+
+            orderStats.OrdersThisMonth = ordersByLastMonths[len - 1].AmountOfOrders;
+            orderStats.OrdersLastMonth = ordersByLastMonths[len - 2].AmountOfOrders;
+
+            int diff = orderStats.OrdersThisMonth - orderStats.OrdersLastMonth;
+
+            orderStats.LastMonthComparerMessage = 
+                diff >= 0 ? $"+{diff}" : diff.ToString();
+
+            int? finishedOrderStatusId = null;
+            var orderStatuses = await unitOfWork.OrderStatusRepository.GetOrderStatusByNameAsync("Zakończone");
+            if (orderStatuses != null)
+                finishedOrderStatusId = orderStatuses.Id;
+
+            var finishedOrders = orders.Where(x => x.OrderStatusId.Equals(finishedOrderStatusId));
+
+            if (finishedOrders == null || finishedOrders.Count() == 0)
+                orderStats.TimelyDeliveriesRatio = 100;
+
+            else
+            {
+                int all = finishedOrders.Count();
+                int finishedOnTimeCounter = finishedOrders
+                    .Where(x => x.OrderRealizationDate?.Date <= x.OrderExpectedDate?.Date).Count();
+                decimal ratio = (finishedOnTimeCounter / all) * 100;
+                orderStats.TimelyDeliveriesRatio = (int) ratio;
+            }
+
+            return orderStats;
+        }
+
         public async Task<Order> GetOrderById(int id)
         {
             var order = await unitOfWork.OrderRepository.GetOrderByIdAsync(id);
@@ -74,6 +130,7 @@ namespace TransThings.Api.BusinessLogic.Services
                 return new OrderResponse(false, "Brak poprawnego statusu zamówienia.", null);
 
             order.OrderStatusId = orderStatusName.Id;
+            order.OrderCreationDate = DateTime.Now;
 
             try
             {

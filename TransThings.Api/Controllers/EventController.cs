@@ -30,6 +30,17 @@ namespace TransThings.Api.Controllers
             return Ok(events);
         }
 
+        [AllowAnonymous]
+        [HttpGet("stats")]
+        public async Task<ActionResult<List<Event>>> GetEventsStats()
+        {
+            var eventsStats = await eventService.GetEventStats();
+            if (eventsStats == null)
+                return NoContent();
+
+            return Ok(eventsStats);
+        }
+
         [HttpGet("forwarding-orders/{id}")]
         public async Task<ActionResult<List<Event>>> GetEventsByForwardingOrder([FromRoute] int id)
         {

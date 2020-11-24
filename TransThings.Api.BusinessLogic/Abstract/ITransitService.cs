@@ -9,6 +9,7 @@ namespace TransThings.Api.BusinessLogic.Abstract
     public interface ITransitService
     {
         Task<List<Transit>> GetAllTransits();
+        Task<TransitStats> GetTransitStats();
         Task<List<Transit>> GetTransitsByForwardingOrder(int forwardingOrderId);
         Task<Transit> GetTransitById(int id);
         Task<GenericResponse> AddTransit(Transit trasit);

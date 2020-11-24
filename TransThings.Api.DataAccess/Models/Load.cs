@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Management.Automation;
 
 namespace TransThings.Api.DataAccess.Models
 {
@@ -25,7 +24,6 @@ namespace TransThings.Api.DataAccess.Models
 
         public decimal GrossWeight { get; set; }
 
-        [AllowNull]
         public decimal Volume { get; set; }
 
         public int OrderId { get; set; }

@@ -9,6 +9,7 @@ namespace TransThings.Api.BusinessLogic.Abstract
     public interface IEventService
     {
         Task<List<Event>> GetAllEvents();
+        Task<EventStats> GetEventStats();
         Task<Event> GetEventById(int id);
         Task<List<Event>> GetEventsByForwardingOrder(int forwardingOrderId);
         Task<GenericResponse> AddEvents(EventDto events);

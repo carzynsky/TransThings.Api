@@ -16,6 +16,11 @@ namespace TransThings.Api.DataAccess.Repositories
             this.context = context;
         }
 
+        public async Task<List<Transit>> GetOnlyTransitAsync()
+        {
+            var transits = await context.Transits.ToListAsync();
+            return transits;
+        }
         public async Task<List<Transit>> GetAllTransitsAsync()
         {
             var transits = await context.Transits.Include(x => x.PaymentForm).Include(x => x.Transporter)

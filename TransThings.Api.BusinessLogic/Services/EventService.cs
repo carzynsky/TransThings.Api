@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,6 +23,29 @@ namespace TransThings.Api.BusinessLogic.Services
         {
             var events = await unitOfWork.EventRepository.GetAllEventsAsync();
             return events;
+        }
+
+        public async Task<EventStats> GetEventStats()
+        {
+            EventStats eventStats = new EventStats();
+            var _events = await unitOfWork.EventRepository.GetAllEventsAsync();
+            if (_events == null || _events.Count() == 0)
+            {
+                eventStats.EventsLastMonth = 0;
+                eventStats.EventsThisMonth = 0;
+                return eventStats;
+            }
+            var _current = DateTime.Now;
+            var _lastMonth = DateTime.Now.AddMonths(-1);
+            int eventsThisMonth = _events.Where(x => x.EventStartTime?.Month == _current.Month 
+            && x.EventStartTime?.Year == _current.Year).Count();
+
+            int eventsLastMonth = _events.Where(x => x.EventStartTime?.Month == _lastMonth.Month
+            && x.EventStartTime?.Year == _lastMonth.Year).Count();
+
+            eventStats.EventsLastMonth = eventsLastMonth;
+            eventStats.EventsThisMonth = eventsThisMonth;
+            return eventStats;
         }
 
         public async Task<Event> GetEventById(int id)

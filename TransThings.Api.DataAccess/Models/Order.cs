@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Management.Automation;
-using System.Text;
 
 namespace TransThings.Api.DataAccess.Models
 {
@@ -69,11 +66,9 @@ namespace TransThings.Api.DataAccess.Models
         [ForeignKey("WarehouseId")]
         public virtual Warehouse Warehouse { get; set; }
 
-        [AllowNull]
         [ForeignKey("ConsultantId")]
         public virtual User Consultant { get; set; }
 
-        [AllowNull]
         [ForeignKey("ForwardingOrderId")]
         public virtual ForwardingOrder ForwardingOrder { get; set; }
     }

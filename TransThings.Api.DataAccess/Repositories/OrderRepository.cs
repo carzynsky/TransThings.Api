@@ -18,6 +18,11 @@ namespace TransThings.Api.DataAccess.Repositories
             this.context = context;
         }
 
+        public async Task<List<Order>> GetOnlyOrders()
+        {
+            var orders = await context.Orders.ToListAsync();
+            return orders;
+        }
         public async Task<List<Order>> GetAllOrdersAsync()
         {
             var orders = await context.Orders.Include(x => x.Client).Include(x => x.Consultant)

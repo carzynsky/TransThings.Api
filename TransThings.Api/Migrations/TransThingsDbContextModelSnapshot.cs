@@ -26,16 +26,8 @@ namespace TransThings.Api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApartmentNumber")
-                        .HasColumnType("nvarchar(40)")
-                        .HasMaxLength(40);
-
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("BuildingNumber")
-                        .HasColumnType("nvarchar(40)")
-                        .HasMaxLength(40);
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(255)")
@@ -95,26 +87,6 @@ namespace TransThings.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
-                });
-
-            modelBuilder.Entity("TransThings.Api.DataAccess.Models.Configuration", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Configurations");
                 });
 
             modelBuilder.Entity("TransThings.Api.DataAccess.Models.Driver", b =>
@@ -187,10 +159,12 @@ namespace TransThings.Api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EventName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(80)")
                         .HasMaxLength(80);
 
                     b.Property<string>("EventPlace")
+                        .IsRequired()
                         .HasColumnType("nvarchar(80)")
                         .HasMaxLength(80);
 
@@ -198,6 +172,7 @@ namespace TransThings.Api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EventStreetAddress")
+                        .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
@@ -246,7 +221,7 @@ namespace TransThings.Api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Amount")
+                    b.Property<int?>("Amount")
                         .HasColumnType("int");
 
                     b.Property<decimal>("GrossWeight")
@@ -270,7 +245,7 @@ namespace TransThings.Api.Migrations
                     b.Property<decimal>("Volume")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("Weight")
+                    b.Property<decimal?>("Weight")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -456,6 +431,9 @@ namespace TransThings.Api.Migrations
                     b.Property<int>("DriverId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("GrossPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -468,6 +446,9 @@ namespace TransThings.Api.Migrations
                     b.Property<string>("RouteShortPath")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("TransitDestinationCity")
                         .HasColumnType("nvarchar(255)")
@@ -561,6 +542,7 @@ namespace TransThings.Api.Migrations
                         .HasMaxLength(255);
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
@@ -678,6 +660,7 @@ namespace TransThings.Api.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Brand")
+                        .IsRequired()
                         .HasColumnType("nvarchar(40)")
                         .HasMaxLength(40);
 
@@ -685,6 +668,7 @@ namespace TransThings.Api.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Model")
+                        .IsRequired()
                         .HasColumnType("nvarchar(80)")
                         .HasMaxLength(80);
 

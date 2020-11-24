@@ -26,27 +26,11 @@ namespace TransThings.Api.Migrations
                     City = table.Column<string>(maxLength: 255, nullable: true),
                     Country = table.Column<string>(maxLength: 255, nullable: true),
                     ContactPhoneNumber1 = table.Column<string>(maxLength: 40, nullable: true),
-                    ContactPhoneNumber2 = table.Column<string>(maxLength: 40, nullable: true),
-                    BuildingNumber = table.Column<string>(maxLength: 40, nullable: true),
-                    ApartmentNumber = table.Column<string>(maxLength: 40, nullable: true)
+                    ContactPhoneNumber2 = table.Column<string>(maxLength: 40, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clients", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Configurations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 255, nullable: true),
-                    Value = table.Column<string>(maxLength: 255, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Configurations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,7 +65,7 @@ namespace TransThings.Api.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(maxLength: 255, nullable: true),
+                    FullName = table.Column<string>(maxLength: 255, nullable: false),
                     ShortName = table.Column<string>(maxLength: 255, nullable: true),
                     NIP = table.Column<string>(maxLength: 40, nullable: true),
                     StreetAddress = table.Column<string>(maxLength: 255, nullable: true),
@@ -204,8 +188,8 @@ namespace TransThings.Api.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Brand = table.Column<string>(maxLength: 40, nullable: true),
-                    Model = table.Column<string>(maxLength: 80, nullable: true),
+                    Brand = table.Column<string>(maxLength: 40, nullable: false),
+                    Model = table.Column<string>(maxLength: 80, nullable: false),
                     LoadingCapacity = table.Column<decimal>(nullable: false),
                     ProductionYear = table.Column<string>(maxLength: 4, nullable: true),
                     Trailer = table.Column<string>(maxLength: 40, nullable: true),
@@ -282,6 +266,8 @@ namespace TransThings.Api.Migrations
                     NetPrice = table.Column<decimal>(nullable: false),
                     GrossPrice = table.Column<decimal>(nullable: false),
                     TransportDistance = table.Column<decimal>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: true),
+                    EndDate = table.Column<DateTime>(nullable: true),
                     TransitSourceStreetAddress = table.Column<string>(maxLength: 255, nullable: true),
                     TransitSourceZipCode = table.Column<string>(maxLength: 30, nullable: true),
                     TransitSourceCity = table.Column<string>(maxLength: 255, nullable: true),
@@ -330,14 +316,14 @@ namespace TransThings.Api.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EventName = table.Column<string>(maxLength: 80, nullable: true),
+                    EventName = table.Column<string>(maxLength: 80, nullable: false),
                     EventStartTime = table.Column<DateTime>(nullable: true),
                     EventEndTime = table.Column<DateTime>(nullable: true),
                     ContactPersonFirstName = table.Column<string>(maxLength: 255, nullable: true),
                     ContactPersonLastName = table.Column<string>(maxLength: 255, nullable: true),
                     ContactPersonPhoneNumber = table.Column<string>(maxLength: 40, nullable: true),
-                    EventPlace = table.Column<string>(maxLength: 80, nullable: true),
-                    EventStreetAddress = table.Column<string>(maxLength: 100, nullable: true),
+                    EventPlace = table.Column<string>(maxLength: 80, nullable: false),
+                    EventStreetAddress = table.Column<string>(maxLength: 100, nullable: false),
                     ForwardingOrderId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -469,8 +455,8 @@ namespace TransThings.Api.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
-                    Weight = table.Column<decimal>(nullable: false),
-                    Amount = table.Column<int>(nullable: false),
+                    Weight = table.Column<decimal>(nullable: true),
+                    Amount = table.Column<int>(nullable: true),
                     PackageType = table.Column<string>(maxLength: 255, nullable: true),
                     NetWeight = table.Column<decimal>(nullable: false),
                     GrossWeight = table.Column<decimal>(nullable: false),
@@ -601,9 +587,6 @@ namespace TransThings.Api.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Configurations");
-
             migrationBuilder.DropTable(
                 name: "Events");
 

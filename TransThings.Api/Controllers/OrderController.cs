@@ -30,6 +30,17 @@ namespace TransThings.Api.Controllers
             return Ok(orders);
         }
 
+        [AllowAnonymous]
+        [HttpGet("stats")]
+        public async Task<ActionResult<List<Order>>> GetOrdersStats()
+        {
+            var orderStats = await orderService.GetOrdersStats();
+            if (orderStats == null)
+                return NoContent();
+
+            return Ok(orderStats);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder([FromRoute] int id)
         {

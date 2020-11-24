@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TransThings.Api.DataAccess.Models
@@ -11,12 +12,11 @@ namespace TransThings.Api.DataAccess.Models
 
         [StringLength(100)]
         public string RouteShortPath { get; set; }
-
         public decimal NetPrice { get; set; }
-
         public decimal GrossPrice { get; set; }
-
         public decimal TransportDistance { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [StringLength(255)]
         public string TransitSourceStreetAddress { get; set; }

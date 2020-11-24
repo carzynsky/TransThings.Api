@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Management.Automation;
-using System.Runtime.InteropServices;
 
 namespace TransThings.Api.DataAccess.Models
 {

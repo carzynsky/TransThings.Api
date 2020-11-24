@@ -33,6 +33,35 @@ namespace TransThings.Api.BusinessLogic.Services
             return transit;
         }
 
+        public async Task<TransitStats> GetTransitStats()
+        {
+            TransitStats transitStats = new TransitStats();
+            var transits = await unitOfWork.TransitRepository.GetOnlyTransitAsync();
+            if (transits == null || transits.Count() == 0)
+                return transitStats;
+
+            int len = 6;
+            var transitsByLastMonths = new List<TransitsByMonth>(len);
+            var today = DateTime.Now;
+            var firstIndex = today.AddMonths(-6);
+
+            string[] monthsTranslate = new string[12] { "Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień",
+            "Wrzesień", "Pażdziernik", "Listopad", "Grudzień"};
+
+            for (int i = 5; i >= 0; i--)
+            {
+                var _month = today.AddMonths(-i);
+                var counter = transits.Where(x => x.StartDate?.Month == _month.Month
+                && x.StartDate?.Year == _month.Year).Count();
+
+                transitsByLastMonths.Add(new TransitsByMonth(monthsTranslate[_month.Month - 1] + " " + _month.Year, counter));
+            }
+
+            transitStats.TransitsByLastMonths = transitsByLastMonths;
+
+            return transitStats;
+        }
+
         public async Task<GenericResponse> AddTransit(Transit transit)
         {
             if (transit == null)
@@ -111,6 +140,8 @@ namespace TransThings.Api.BusinessLogic.Services
                 transitToUpdate.TransportDistance = _transit.TransportDistance;
                 transitToUpdate.PaymentFormId = _transit.PaymentFormId;
                 transitToUpdate.DriverId = _transit.DriverId;
+                transitToUpdate.StartDate = _transit.StartDate;
+                transitToUpdate.EndDate = _transit.EndDate;
                 transitToUpdate.TransporterId = _transit.TransporterId;
                 transitToUpdate.VehicleId = _transit.VehicleId;
                 transitToUpdate.RouteShortPath = _transit.RouteShortPath;

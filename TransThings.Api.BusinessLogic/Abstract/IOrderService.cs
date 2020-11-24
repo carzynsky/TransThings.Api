@@ -10,6 +10,7 @@ namespace TransThings.Api.BusinessLogic.Abstract
     public interface IOrderService
     {
         Task<List<Order>> GetAllOrders();
+        Task<OrderStats> GetOrdersStats();
         Task<Order> GetOrderById(int id);
         Task<List<Order>> GetOrdersByClientId(int clientId);
         Task<List<Order>> GetOrdersByStatus(int orderStatusId);
