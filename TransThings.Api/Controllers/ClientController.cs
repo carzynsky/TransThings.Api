@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TransThings.Api.BusinessLogic.Abstract;
+using TransThings.Api.DataAccess.Constants;
 using TransThings.Api.DataAccess.Models;
 
 namespace TransThings.Api.Controllers
@@ -39,6 +40,7 @@ namespace TransThings.Api.Controllers
             return Ok(client);
         }
 
+        [Authorize(Roles = Role.Admin + "," + Role.OrderEmployee)]
         [HttpPost]
         public async Task<ActionResult> AddClient([FromBody] Client client)
         {
@@ -50,6 +52,7 @@ namespace TransThings.Api.Controllers
             return Ok(addClientResult);
         }
 
+        [Authorize(Roles = Role.Admin + "," + Role.OrderEmployee)]
         [HttpPut("{id}")]
         public async Task<ActionResult> EditClient([FromBody] Client client, [FromRoute] int id)
         {
